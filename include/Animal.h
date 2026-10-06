@@ -4,7 +4,7 @@
 #include <string>
 #include "AnimalCommon.h"
 
-// 抽象基类不能直接创建对象；实际对象应为 Mammal、Bird 或 Reptile。
+// 抽象基类不能直接创建对象，实际对象应为 Mammal、Bird 或 Reptile。
 class Animal {
 public:
     Animal(const std::string& animalId, const std::string& name,

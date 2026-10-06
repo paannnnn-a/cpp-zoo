@@ -1,0 +1,3 @@
+﻿P001|团团|Mammal|大熊猫|5|雌|Z001|NORMAL
+P002|小蓝|Bird|蓝孔雀|2|雌|Z003|TREATMENT
+P003|慢慢|Reptile|陆龟|10|未知|Z004|ISOLATED
