@@ -173,6 +173,50 @@ bool AnimalManager::getAnimalBasicInfo(const std::string& animalId,AnimalBasicIn
     return buildBasicInfo(*animal, outInfo);
 }
 
+/**
+ * 功能：从内部动物对象读取基本信息、年龄和性别，
+ *       组合为完整档案查询结果。
+ *
+ * 参数：
+ * animalId：目标动物编号。
+ * out：[输出参数] 成功后接收完整结果；
+ *      动物或园区不存在时保持原值。
+ *
+ * 返回：
+ * true：查询成功。
+ * false：动物不存在或关联园区信息无效。
+ *
+ * 实现说明：
+ * 先使用局部变量准备结果，全部成功后再赋给out，
+ * 避免查询失败时留下不完整的输出数据。
+ */
+bool AnimalManager::getAnimalDetailInfo(
+    const std::string& animalId,
+    AnimalDetailInfo& out
+) const {
+    // 复用阶段4已经实现的内部查找函数。
+    const Animal* animal = findAnimalInternal(animalId);
+
+    if (animal == nullptr) {
+        return false;
+    }
+
+    AnimalDetailInfo info;
+
+    // 复用阶段5的信息转换，统一填写园区、状态和展出信息。
+    if (!buildBasicInfo(*animal, info.basic)) {
+        return false;
+    }
+
+    info.age = animal->getAge();
+    info.gender = animal->getGender();
+
+    // 完整结果准备好后，再交给调用方。
+    out = std::move(info);
+
+    return true;
+}
+
 //判断指定ID的动物是否可以接受投喂；参数：动物ID。
 bool AnimalManager::canReceiveFeeding(const std::string& animalId) const {
     const Animal* animal = findAnimalInternal(animalId);

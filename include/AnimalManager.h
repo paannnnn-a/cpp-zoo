@@ -10,6 +10,22 @@
 
 /*文件说明：以下是动物管理接口，可供另外两个子系统使用*/
 
+/**
+ * 功能：保存A子系统完整动物档案所需的查询结果。
+ *
+ * basic：原来的动物基本信息，包括编号、名称、物种、园区和状态。
+ * age：动物年龄。
+ * gender：动物性别。
+ *
+ * 说明：这是查询结果副本，修改它不会修改Manager内部的动物。
+ *       不修改B/C已经使用的AnimalBasicInfo，避免影响组员接口。
+ */
+struct AnimalDetailInfo {
+    AnimalBasicInfo basic;
+    int age = 0;
+    std::string gender;
+};
+
 class AnimalManager {
 public:
     explicit AnimalManager(const ZoneManager& zoneManager) : zones(zoneManager) {}
@@ -23,6 +39,24 @@ public:
     bool animalExists(const std::string& animalId) const;
     // 成功返回副本；不存在返回 false，outInfo 保持原值。
     bool getAnimalBasicInfo(const std::string& animalId, AnimalBasicInfo& outInfo) const;
+    /**
+    * 功能：查询动物详细信息，供完整档案页面使用。
+    *
+    * 参数：
+    * animalId：目标动物编号，例如P001。
+    * out：[输出参数] 成功时写入基本信息、年龄和性别；
+    *      普通查询失败时保持原值。
+    *
+    * 返回：
+    * true：动物存在，且关联园区信息有效。
+    * false：动物不存在或关联园区不存在。
+    *
+    * 说明：返回副本，不向外暴露Animal指针。
+    */
+    bool getAnimalDetailInfo(
+        const std::string& animalId,
+        AnimalDetailInfo& out
+    ) const;
     // NORMAL/TREATMENT/ISOLATED 可喂养，其他状态及不存在返回 false。
     bool canReceiveFeeding(const std::string& animalId) const;
     // 仅 NORMAL 展出，不存在返回 false。
