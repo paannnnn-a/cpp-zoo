@@ -16,6 +16,10 @@
 #include <system_error>
 
 //非const版本;根据动物编号在内部容器里查找对应的动物，返回可修改的指针，没有就返回nullptr。
+/**
+ * @brief 遍历 animals 并比较编号，命中返回内部指针，未命中返回 nullptr；不转移所有权。
+ * @param animalId 动物唯一编号。
+ */
 Animal* AnimalManager::findAnimalInternal(const std::string& animalId) {
     for (const auto& animal : animals) {
         if (animal->getId() == animalId) {
@@ -26,6 +30,10 @@ Animal* AnimalManager::findAnimalInternal(const std::string& animalId) {
 }
 
 //const版本;根据动物编号在内部容器里查找对应的动物，返回只读的指针。
+/**
+ * @brief 遍历 animals 并比较编号，命中返回内部指针，未命中返回 nullptr；不转移所有权。
+ * @param animalId 动物唯一编号。
+ */
 const Animal* AnimalManager::findAnimalInternal(const std::string& animalId) const {
     for (const auto& animal : animals) {
         if (animal->getId() == animalId) {
@@ -36,6 +44,10 @@ const Animal* AnimalManager::findAnimalInternal(const std::string& animalId) con
 }
 
 //自动生成一个尚未使用过的动物编号：从 P001 开始，生成编号，利用findAnimalInternal()寻找第一个没有使用过的编号。
+/**
+ * @brief 从 1 开始递增，格式化为 P 加至少三位数字，返回第一个未占用编号。
+ * @note 参数：无。
+ */
 std::string AnimalManager::generateAnimalId() const {
     for (std::size_t number = 1; ; ++number) {
         std::ostringstream output;
@@ -48,6 +60,10 @@ std::string AnimalManager::generateAnimalId() const {
 }
 
 //添加一个已经创建好的动物到管理器，参数表示把该动物的“管理权传进来；参数：创建好的动物智能指针。
+/**
+ * @brief 校验对象、编号唯一性及园区关联；字段重载先按类别构造派生对象，再移交 unique_ptr 所有权。
+ * @param animal 待处理动物对象；unique_ptr 参数转移所有权。
+ */
 bool AnimalManager::addAnimal(std::unique_ptr<Animal> animal) {
     // 防止调用方传入空智能指针。
     if (!animal) {
@@ -68,6 +84,15 @@ bool AnimalManager::addAnimal(std::unique_ptr<Animal> animal) {
 }
 
 //根据类别和各种信息创建一只新动物，并加入管理器。
+/**
+ * @brief 校验对象、编号唯一性及园区关联；字段重载先按类别构造派生对象，再移交 unique_ptr 所有权。
+ * @param category Mammal、Bird 或 Reptile 类别编码。
+ * @param name 名称。
+ * @param species 物种。
+ * @param age 非负年龄。
+ * @param gender 性别文本。
+ * @param zoneId 所属园区编号。
+ */
 bool AnimalManager::addAnimal(
     const std::string& category,
     const std::string& name,
@@ -113,6 +138,11 @@ bool AnimalManager::addAnimal(
 }
 
 //改变动物状态；参数：ID、新状态。
+/**
+ * @brief 先查找动物并校验枚举，再调用状态 Setter；失败返回 false。
+ * @param animalId 动物唯一编号。
+ * @param status 动物状态。
+ */
 bool AnimalManager::changeAnimalStatus(const std::string& animalId,AnimalStatus status) {
     Animal* animal = findAnimalInternal(animalId);
 
@@ -130,6 +160,11 @@ bool AnimalManager::changeAnimalStatus(const std::string& animalId,AnimalStatus 
 }
 
 //把一个 Animal 对象转换成对外使用的 AnimalBasicInfo 结构体；参数：动物的引用，查询结果副本的引用（AnimalBasicInfo结构体）。
+/**
+ * @brief 先查询关联园区，再复制动物字段并计算展出状态，全部完成后写入输出参数。
+ * @param animal 待处理动物对象；unique_ptr 参数转移所有权。
+ * @param outInfo 成功时写入的查询副本；失败保持原值。
+ */
 bool AnimalManager::buildBasicInfo(const Animal& animal,AnimalBasicInfo& outInfo) const {
     ZoneInfo zoneInfo;
 
@@ -158,11 +193,20 @@ bool AnimalManager::buildBasicInfo(const Animal& animal,AnimalBasicInfo& outInfo
 }
 
 //判断动物是否存在；参数：ID。
+/**
+ * @brief 调用内部编号查找，根据是否得到非空指针返回结果；转出和死亡档案仍存在。
+ * @param animalId 动物唯一编号。
+ */
 bool AnimalManager::animalExists(const std::string& animalId) const {
     return findAnimalInternal(animalId) != nullptr;
 }
 
 //获取动物的基本信息；参数：动物的ID，查询结果副本的引用（AnimalBasicInfo结构体）
+/**
+ * @brief 按编号查找内部对象，再调用 buildBasicInfo；查找失败返回 false。
+ * @param animalId 动物唯一编号。
+ * @param outInfo 成功时写入的查询副本；失败保持原值。
+ */
 bool AnimalManager::getAnimalBasicInfo(const std::string& animalId,AnimalBasicInfo& outInfo) const {
     const Animal* animal = findAnimalInternal(animalId);
 
@@ -189,6 +233,7 @@ bool AnimalManager::getAnimalBasicInfo(const std::string& animalId,AnimalBasicIn
  * 实现说明：
  * 先使用局部变量准备结果，全部成功后再赋给out，
  * 避免查询失败时留下不完整的输出数据。
+ * @details 查找动物并构造临时基本信息，再填入年龄、性别，最后提交输出副本。
  */
 bool AnimalManager::getAnimalDetailInfo(
     const std::string& animalId,
@@ -218,6 +263,10 @@ bool AnimalManager::getAnimalDetailInfo(
 }
 
 //判断指定ID的动物是否可以接受投喂；参数：动物ID。
+/**
+ * @brief 先检查动物存在，再按状态分支：正常、治疗中、隔离允许喂养，转出和死亡不允许。
+ * @param animalId 动物唯一编号。
+ */
 bool AnimalManager::canReceiveFeeding(const std::string& animalId) const {
     const Animal* animal = findAnimalInternal(animalId);
 
@@ -240,6 +289,10 @@ bool AnimalManager::canReceiveFeeding(const std::string& animalId) const {
 }
 
 //判断指定ID动物是否处于“展出”状态。参数：动物ID。
+/**
+ * @brief 检查动物存在且状态等于 NORMAL，利用短路求值避免访问空指针。
+ * @param animalId 动物唯一编号。
+ */
 bool AnimalManager::isAnimalOnDisplay(const std::string& animalId) const {
     const Animal* animal = findAnimalInternal(animalId);
 
@@ -247,6 +300,10 @@ bool AnimalManager::isAnimalOnDisplay(const std::string& animalId) const {
 }
 
 //按关键字模糊搜索动物（匹配名称或物种）；参数：关键词。
+/**
+ * @brief 逐个检查名称或物种是否包含关键字，将成功构造的基本信息副本加入结果。
+ * @param keyword 名称或物种的子串；空串匹配全部。
+ */
 std::vector<AnimalBasicInfo> AnimalManager::searchAnimals(const std::string& keyword) const {
     std::vector<AnimalBasicInfo> result;
 
@@ -268,6 +325,10 @@ std::vector<AnimalBasicInfo> AnimalManager::searchAnimals(const std::string& key
 }
 
 //获取指定园区下的所有动物基本信息。参数：园区名称。
+/**
+ * @brief 先确认园区存在，再遍历动物按园区编号筛选并返回基本信息副本。
+ * @param zoneId 所属园区编号。
+ */
 std::vector<AnimalBasicInfo> AnimalManager::getAnimalsByZone(const std::string& zoneId) const {
     std::vector<AnimalBasicInfo> result;
 
@@ -296,6 +357,10 @@ const std::string& AnimalManager::getLastError() const {
 }
 
 //实现保存动物；参数：文件名。（但是可能出现只有半个文件的情况，还在想）
+/**
+ * @brief 按固定字段顺序和竖线分隔符序列化记录，检查文件写入结果并返回是否成功。
+ * @param filename 读写文件路径。
+ */
 bool AnimalManager::saveToFile(const std::string& filename) const {
     lastError.clear();
 
@@ -340,6 +405,10 @@ bool AnimalManager::saveToFile(const std::string& filename) const {
 }
 
 //实现加载动物；参数：文件名。
+/**
+ * @brief 读取并拆分文件字段，校验格式、编号唯一性及关联对象，先存入临时容器，全部成功后交换正式数据。
+ * @param filename 读写文件路径。
+ */
 bool AnimalManager::loadFromFile(const std::string& filename) {
     lastError.clear();
 

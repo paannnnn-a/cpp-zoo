@@ -5,6 +5,9 @@
  * @brief 表示一条治疗记录，复用医疗基类的公共字段及校验。
  * @note 类型固定为TREATMENT；新增记录是否改变动物状态由HealthManager决定。
  */
+/**
+ * @brief 公有继承 MedicalRecord，复用记录编号、动物编号、日期、兽医和描述，不新增字段；继承基类构造函数，重写 getType 区分医疗业务。
+ */
 class TreatmentRecord : public MedicalRecord {
   public:
     /**
@@ -19,8 +22,9 @@ class TreatmentRecord : public MedicalRecord {
     using MedicalRecord::MedicalRecord;
     /**
      * @brief 返回治疗记录的固定类型编码。
-     * 参数：无。
+     * @note 参数：无。
      * @return 固定字符串“TREATMENT”，用于文件保存和界面识别。
-     */
+     * @details 派生类返回固定医疗类型编码，基类通过虚函数分派获取实际类型。
+ */
     std::string getType() const override;
 };
