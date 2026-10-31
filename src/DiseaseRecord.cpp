@@ -1,8 +1,9 @@
 #include "DiseaseRecord.h"
 /**
  * @brief 返回疾病记录的固定类型编码。
- * 参数：无。
+ * @note 参数：无。
  * @return 固定字符串“DISEASE”。
+ * @details 派生类返回固定医疗类型编码，基类通过虚函数分派获取实际类型。
  */
 std::string DiseaseRecord::getType() const {
     return "DISEASE";
