@@ -1,3 +1,8 @@
+/**
+ * @file InventoryMenu.cpp
+ * @brief 实现库存管理菜单和交互输入处理。
+ */
+
 #include "../include/InventoryMenu.h"
 
 #include <iostream>
@@ -10,14 +15,18 @@
 #include <memory>
 #include <utility>
 
-// 构造函数：使用已有库存管理器，保存数据文件路径
+/**
+ * @brief 初始化库存菜单并绑定库存管理器。
+ */
 InventoryMenu::InventoryMenu(
     InventoryManager& manager,
     const std::string& filename)
     : inventory(manager), dataFile(filename) {
 }
 
-// 显示菜单
+/**
+ * @brief 输出库存管理菜单选项。
+ */
 void InventoryMenu::showMenu() const {
     std::cout << "\n========== 食物库存管理 ==========\n";
     std::cout << "1. 查看全部库存\n";
@@ -34,7 +43,9 @@ void InventoryMenu::showMenu() const {
     std::cout << "请选择：";
 }
 
-// 按编号查询食物
+/**
+ * @brief 读取食物编号并显示匹配的库存信息。
+ */
 void InventoryMenu::queryFood() {
     std::string id;
 
@@ -59,14 +70,16 @@ void InventoryMenu::queryFood() {
     food->displayInfo();
 }
 
-// 运行菜单：完成一次操作后重新显示菜单
+/**
+ * @brief 运行库存菜单循环，直到请求返回或退出。
+ */
 char InventoryMenu::run() {
     std::string choice;
 
     while (true) {
         showMenu();
 
-        // 输入流关闭时返回退出请求，避免无限循环
+        // 输入流关闭时返回退出请求，防止无限循环
         if (!std::getline(std::cin, choice)) {
             return 'Q';
         }
@@ -111,7 +124,9 @@ char InventoryMenu::run() {
         }
     }
 }
-// 处理库存变化：true为入库，false为出库
+/**
+ * @brief 交互处理出入库，确认后修改库存并尝试保存。
+ */
 void InventoryMenu::changeStock(bool isStockIn) {
     const std::string action = isStockIn ? "入库" : "出库";
     std::string id;
@@ -191,7 +206,7 @@ void InventoryMenu::changeStock(bool isStockIn) {
         ? food->getStock() + amount
         : food->getStock() - amount;
 
-    // 确认前展示影响范围，此时尚未修改库存
+    // 确认前展示影响范围，这里还没有修改库存
     std::cout << "\n食物：" << food->getName() << "\n";
     std::cout << "本次" << action << "："
               << amount << food->getUnit() << "\n";
@@ -215,9 +230,7 @@ void InventoryMenu::changeStock(bool isStockIn) {
         return;
     }
 
-    bool success = isStockIn
-        ? inventory.stockIn(id, amount)
-        : inventory.stockOut(id, amount);
+    bool success = isStockIn ? inventory.stockIn(id, amount) : inventory.stockOut(id, amount);
 
     if (!success) {
         return;
@@ -231,13 +244,15 @@ void InventoryMenu::changeStock(bool isStockIn) {
                      "菜单6重新保存。\n";
     }
 }
-// 录入并添加一种新食物
+/**
+ * @brief 交互录入一种食物，确认后加入库存并尝试保存。
+ */
 void InventoryMenu::addFood() {
     std::cout << "\n========== 添加食物 ==========\n";
     std::cout << "任意输入步骤输入 /cancel 可取消。\n";
     std::cout << "库存和预警值允许填写0。\n";
 
-    // 读取文本：检查空白、分隔符和取消命令
+    // 读取文本，检查空白、分隔符，取消命令
     auto readText = [](const std::string& prompt,
                        std::string& value) -> bool {
         while (true) {
@@ -311,7 +326,7 @@ void InventoryMenu::addFood() {
     double stock = 0;
     double warningStock = 0;
 
-    // 选择类型
+    // 选择食物的类型
     while (true) {
         if (!readText(
                 "选择类型：1.植物类 2.肉类 3.水果类：",
@@ -379,7 +394,7 @@ void InventoryMenu::addFood() {
         );
     }
 
-    // 确认之前，食物尚未加入库存
+    // 确认之前，食物不会加入库存
     std::cout << "\n请核对新食物信息：\n";
     food->displayInfo();
 
@@ -399,13 +414,15 @@ void InventoryMenu::addFood() {
         return;
     }
 
-    // 添加成功后自动保存
+    // 食物添加成功后会自动保存
     if (!inventory.saveToFile(dataFile)) {
         std::cout << "食物已添加到内存，但文件保存失败。\n";
         std::cout << "请不要关闭程序，排查后选择菜单6重新保存。\n";
     }
 }
-// 修改食物名称和库存预警值
+/**
+ * @brief 交互修改食物名称和预警阈值，确认后尝试保存。
+ */
 void InventoryMenu::editFood() {
     std::cout << "\n========== 修改食物信息 ==========\n";
     std::cout << "输入 /cancel 可取消，确认前不会修改数据。\n";
@@ -437,7 +454,7 @@ void InventoryMenu::editFood() {
     double newWarningStock = food->getWarningStock();
 
     while (true) {
-        std::cout << "新名称（直接回车保持原名称）：";
+        std::cout << "新名称（直接回车会保持原名称）：";
 
         std::string input;
 
@@ -508,7 +525,7 @@ void InventoryMenu::editFood() {
         break;
     }
 
-    // 未实际修改时直接返回
+    // 没有实际修改时直接返回
     if (newName == food->getName() &&
         newWarningStock == food->getWarningStock()) {
         std::cout << "信息没有变化。\n";

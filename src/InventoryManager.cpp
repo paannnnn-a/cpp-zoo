@@ -1,3 +1,8 @@
+/**
+ * @file InventoryManager.cpp
+ * @brief 实现食物库存管理、出入库及文件读写。
+ */
+
 #include "../include/InventoryManager.h"
 
 #include "../include/PlantFood.h"
@@ -13,7 +18,9 @@
 #include <fstream>
 #include <iomanip>
 #include <limits>
-// 添加食物：检查对象是否有效，以及编号是否重复
+/**
+ * @brief 接管一个食物对象并加入库存。
+ */
 bool InventoryManager::addFood(std::unique_ptr<Food> food) {
     if (!food) {
         std::cout << "添加失败：食物对象为空。\n";
@@ -37,7 +44,9 @@ bool InventoryManager::addFood(std::unique_ptr<Food> food) {
     return true;
 }
 
-// 根据编号查找食物
+/**
+ * @brief 按食物编号查找库存对象。
+ */
 Food* InventoryManager::findFood(const std::string& foodId) {
     for (const auto& food : foods) {
         if (food->getId() == foodId) {
@@ -48,10 +57,12 @@ Food* InventoryManager::findFood(const std::string& foodId) {
     return nullptr;
 }
 
-// 食物入库
+/**
+ * @brief 校验入库数量并增加指定食物的库存。
+ */
 bool InventoryManager::stockIn(const std::string& foodId,
                                double amount) {
-    // 排除非正数、无穷大和非数字值
+    // 检查食物的数量是不是合法的
     if (!std::isfinite(amount) || amount <= 0) {
         std::cout << "入库失败：数量必须是大于0的有限数值。\n";
         return false;
@@ -73,7 +84,9 @@ bool InventoryManager::stockIn(const std::string& foodId,
     return true;
 }
 
-// 食物出库
+/**
+ * @brief 校验出库数量并扣减指定食物的库存。
+ */
 bool InventoryManager::stockOut(const std::string& foodId,
                                 double amount) {
     if (!std::isfinite(amount) || amount <= 0) {
@@ -92,7 +105,9 @@ bool InventoryManager::stockOut(const std::string& foodId,
     return food->reduceStock(amount);
 }
 
-// 显示全部食物
+/**
+ * @brief 输出全部食物及其库存信息。
+ */
 void InventoryManager::showAllFoods() const {
     if (foods.empty()) {
         std::cout << "当前没有食物信息。\n";
@@ -105,7 +120,9 @@ void InventoryManager::showAllFoods() const {
     }
 }
 
-// 显示库存预警
+/**
+ * @brief 输出库存小于或等于预警阈值的食物。
+ */
 void InventoryManager::showLowStockFoods() const {
     bool found = false;
 
@@ -120,7 +137,9 @@ void InventoryManager::showLowStockFoods() const {
     if (!found) {
         std::cout << "当前没有需要补充库存的食物。\n";
     }}
-    // 将全部食物保存到文件
+/**
+ * @brief 将全部库存以竖线分隔的文本格式覆盖写入文件。
+ */
 bool InventoryManager::saveToFile(
     const std::string& filename) const {
 
@@ -130,13 +149,12 @@ bool InventoryManager::saveToFile(
             food->getName().find_first_of("|\r\n") != std::string::npos ||
             food->getUnit().find_first_of("|\r\n") != std::string::npos) {
 
-            std::cout << "保存失败：编号、名称或单位"
-                         "不能包含竖线或换行符。\n";
+            std::cout << "保存失败：编号、名称或单位不能包含竖线或换行符。\n";
             return false;
         }
     }
 
-    // 打开文件。注意：会覆盖该文件原有内容
+    // 打开文件，会覆盖文件内容
     std::ofstream file(filename);
 
     if (!file.is_open()) {
@@ -171,8 +189,9 @@ bool InventoryManager::saveToFile(
     return true;
 
 }
-// 从文件加载库存
-// 只有全部数据检查通过后，才替换当前库存
+/**
+ * @brief 校验并加载库存文件，全部成功后替换当前库存。
+ */
 bool InventoryManager::loadFromFile(
     const std::string& filename) {
 
@@ -187,7 +206,7 @@ bool InventoryManager::loadFromFile(
     // 临时保存读到的食物，避免读取失败破坏原库存
     std::vector<std::unique_ptr<Food>> loadedFoods;
 
-    // 用于检查食物编号是否重复
+    // 用于检查食物编号是不是重复
     std::unordered_set<std::string> usedIds;
 
     std::string line;
@@ -271,7 +290,7 @@ bool InventoryManager::loadFromFile(
             return false;
         }
 
-        // 检查预警值
+        // 检查预警值是不是合法的
         std::istringstream warningStream(fields[5]);
         if (!(warningStream >> warningStock)) {
             std::cout << "读取失败：第" << lineNumber

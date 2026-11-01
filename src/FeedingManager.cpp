@@ -1,3 +1,8 @@
+/**
+ * @file FeedingManager.cpp
+ * @brief 实现喂养计划执行、记录持久化和消耗统计。
+ */
+
 #include "../include/FeedingManager.h"
 
 #include <cmath>
@@ -10,12 +15,16 @@
 #include <utility>
 #include <ctime>
 #include <map>
-// 使用已有的库存管理器
+/**
+ * @brief 绑定已有库存管理器，初始化饲养管理器。
+ */
 FeedingManager::FeedingManager(InventoryManager& manager)
     : inventory(manager) {
 }
 
-// 根据编号查找计划，仅供内部使用
+/**
+ * @brief 按编号查找可修改的喂养计划。
+ */
 FeedingPlan* FeedingManager::findPlan(
     const std::string& planId) {
 
@@ -28,19 +37,19 @@ FeedingPlan* FeedingManager::findPlan(
     return nullptr;
 }
 
-// 添加喂养计划
+/**
+ * @brief 校验并添加一条未完成的喂养计划。
+ */
 bool FeedingManager::addPlan(const FeedingPlan& plan) {
     // 编号不能为空，也不能包含空白或文件分隔符
     const auto validId = [](const std::string& id) {
-        return !id.empty() &&
-               id.find_first_of(" \t\r\n|") == std::string::npos;
+        return !id.empty() &&id.find_first_of(" \t\r\n|") == std::string::npos;
     };
 
     if (!validId(plan.getPlanId()) ||
         !validId(plan.getAnimalId()) ||
         !validId(plan.getFoodId())) {
-        std::cout << "添加失败：编号不能为空，"
-                     "也不能包含空白或竖线。\n";
+        std::cout << "添加失败：编号不能为空，也不能包含空白或竖线。\n";
         return false;
     }
 
@@ -54,8 +63,7 @@ bool FeedingManager::addPlan(const FeedingPlan& plan) {
         return false;
     }
 
-    if (!std::isfinite(plan.getAmount()) ||
-        plan.getAmount() <= 0) {
+    if (!std::isfinite(plan.getAmount()) ||plan.getAmount() <= 0) {
         std::cout << "添加失败：喂养数量不合法。\n";
         return false;
     }
@@ -63,8 +71,7 @@ bool FeedingManager::addPlan(const FeedingPlan& plan) {
     Food* food = inventory.findFood(plan.getFoodId());
 
     if (food == nullptr) {
-        std::cout << "添加失败：对应食物不存在，"
-                     "请先在库存中添加食物。\n";
+        std::cout << "添加失败：对应食物不存在，请先在库存中添加食物。\n";
         return false;
     }
 
@@ -73,14 +80,15 @@ bool FeedingManager::addPlan(const FeedingPlan& plan) {
 
     // 建立计划不扣库存，库存不足时只提醒
     if (food->getStock() < plan.getAmount()) {
-        std::cout << "提醒：当前库存不足以完成这条计划，"
-                     "请在喂养前补充。\n";
+        std::cout << "提醒：当前库存不足以完成这条计划，请在喂养前补充。\n";
     }
 
     return true;
 }
 
-// 显示全部计划
+/**
+ * @brief 输出全部喂养计划。
+ */
 void FeedingManager::showAllPlans() const {
     if (plans.empty()) {
         std::cout << "当前没有喂养计划。\n";
@@ -93,10 +101,10 @@ void FeedingManager::showAllPlans() const {
     }
 }
 
-// 按日期查询
-void FeedingManager::showPlansByDate(
-    const std::string& date) const {
-
+/**
+ * @brief 输出指定计划日期的喂养计划。
+ */
+void FeedingManager::showPlansByDate(const std::string& date) const {
     bool found = false;
 
     for (const auto& plan : plans) {
@@ -112,10 +120,10 @@ void FeedingManager::showPlansByDate(
     }
 }
 
-// 按动物编号查询
-void FeedingManager::showPlansByAnimal(
-    const std::string& animalId) const {
-
+/**
+ * @brief 输出指定动物的喂养计划。
+ */
+void FeedingManager::showPlansByAnimal(const std::string& animalId) const {
     bool found = false;
 
     for (const auto& plan : plans) {
@@ -131,19 +139,15 @@ void FeedingManager::showPlansByAnimal(
     }
 }
 
-// 完成计划：成功扣库存后才标记完成
-// 完成喂养，并生成历史记录
-bool FeedingManager::completePlan(
-    const std::string& planId,
-    const std::string& keeperName) {
+/**
+ * @brief 执行喂养计划，成功扣减库存后标记完成并保留记录。
+ */
+bool FeedingManager::completePlan( const std::string& planId,const std::string& keeperName) {
 
     if (keeperName.empty() ||
-        keeperName.find_first_not_of(" \t\r\n")
-            == std::string::npos ||
-        keeperName.find_first_of("|\r\n")
-            != std::string::npos) {
-        std::cout << "操作失败：操作人员不能为空，"
-                     "也不能包含竖线或换行符。\n";
+        keeperName.find_first_not_of(" \t\r\n") == std::string::npos ||
+        keeperName.find_first_of("|\r\n")!= std::string::npos) {
+        std::cout << "操作失败，原因:操作人员不能为空，操作人员不能包含竖线或换行符。\n";
         return false;
     }
 
@@ -155,8 +159,7 @@ bool FeedingManager::completePlan(
     }
 
     if (plan->isCompleted()) {
-        std::cout << "操作失败：该计划已经完成，"
-                     "不能重复扣库存。\n";
+        std::cout << "操作失败：该计划已经完成，不能重复扣库存。\n";
         return false;
     }
 
@@ -178,13 +181,12 @@ bool FeedingManager::completePlan(
     for (const auto& record : records) {
         if (record.getRecordId() == recordId ||
             record.getPlanId() == planId) {
-            std::cout << "操作失败：该计划已有喂养记录，"
-                         "请检查计划状态。\n";
+            std::cout << "操作失败：该计划已有喂养记录，请检查计划状态。\n";
             return false;
         }
     }
 
-    // 获取电脑当前的本地时间
+    // 所有前置检查通过后，获取系统本地时间。
     std::time_t now = std::time(nullptr);
 
     if (now == static_cast<std::time_t>(-1)) {
@@ -216,8 +218,7 @@ bool FeedingManager::completePlan(
         timeStream.str()
     );
 
-    if (!inventory.stockOut(
-            plan->getFoodId(), plan->getAmount())) {
+    if (!inventory.stockOut(plan->getFoodId(), plan->getAmount())) {
         records.pop_back();
 
         std::cout << "喂养未完成，未保留本次记录。\n";
@@ -230,17 +231,17 @@ bool FeedingManager::completePlan(
     std::cout << "生成记录：" << recordId << "\n";
     std::cout << "操作人员：" << keeperName << "\n";
     std::cout << "完成时间：" << timeStream.str() << "\n";
-    std::cout << food->getName() << "剩余库存："
-              << food->getStock()
-              << food->getUnit() << "\n";
+    std::cout << food->getName() << "剩余库存：" << food->getStock() << food->getUnit() << "\n";
 
     if (food->isLowStock()) {
-        std::cout << "提醒：库存已达到预警范围，请及时补充。\n";
+        std::cout << "提醒：库存已达到预警范围，请及时补充食物。\n";
     }
 
     return true;
 }
-// 保存全部喂养计划，包括完成状态
+/**
+ * @brief 将全部喂养计划及完成状态覆盖写入文件。
+ */
 bool FeedingManager::saveToFile(
     const std::string& filename) const {
 
@@ -257,8 +258,7 @@ bool FeedingManager::saveToFile(
             plan.getTime().find_first_of("|\r\n")
                 != std::string::npos) {
 
-            std::cout << "保存失败：计划字段不能包含"
-                         "竖线或换行符。\n";
+            std::cout << "保存失败：计划字段不能包含竖线或换行符。\n";
             return false;
         }
     }
@@ -290,24 +290,23 @@ bool FeedingManager::saveToFile(
     file.close();
 
     if (!file) {
-        std::cout << "保存失败：计划文件写入"
-                     "或关闭发生错误。\n";
+        std::cout << "保存失败：计划文件写入或关闭时发生错误。\n";
         return false;
     }
 
-    std::cout << "喂养计划已保存到："
-              << filename << "\n";
+    std::cout << "喂养计划已保存到："<< filename << "\n";
     return true;
 }
-// 读取喂养计划，全部检查通过后才替换当前计划
+/**
+ * @brief 校验并加载全部计划，全部成功后替换当前计划。
+ */
 bool FeedingManager::loadFromFile(
     const std::string& filename) {
 
     std::ifstream file(filename);
 
     if (!file.is_open()) {
-        std::cout << "读取失败：无法打开文件 "
-                  << filename << "\n";
+        std::cout << "读取失败：无法打开文件 " << filename << "\n";
         return false;
     }
 
@@ -333,7 +332,7 @@ bool FeedingManager::loadFromFile(
         return true;
     };
 
-    // 检查日期，包括闰年和每月天数
+    // 检查日期，考虑是不是闰年，每个月的天数是不是正确的
     auto validDate = [&](const std::string& date) -> bool {
         if (date.size() != 10 ||
             date[4] != '-' || date[7] != '-' ||
@@ -364,7 +363,7 @@ bool FeedingManager::loadFromFile(
         return day >= 1 && day <= days[month - 1];
     };
 
-    // 检查24小时制时间
+    // 检查是不是符合24h范围的要求
     auto validTime = [&](const std::string& time) -> bool {
         if (time.size() != 5 || time[2] != ':' ||
             !allDigits(time, 0, 2) ||
@@ -416,28 +415,24 @@ bool FeedingManager::loadFromFile(
         }
 
         if (fields.size() != 7) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行必须包含7个字段。\n";
+            std::cout << "读取失败：第" <<lineNumber<< "行必须包含7个字段。\n";
             return false;
         }
 
         if (!validId(fields[0]) ||
             !validId(fields[1]) ||
             !validId(fields[2])) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的编号格式不合法。\n";
+            std::cout << "读取失败：第" <<lineNumber<< "行的编号格式不合法。\n";
             return false;
         }
 
         if (!usedIds.insert(fields[0]).second) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的计划编号重复。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的计划编号重复。\n";
             return false;
         }
 
         if (!validDate(fields[3]) || !validTime(fields[4])) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的日期或时间不合法。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的日期或时间不合法。\n";
             return false;
         }
 
@@ -445,8 +440,7 @@ bool FeedingManager::loadFromFile(
         std::istringstream stream(fields[5]);
 
         if (!(stream >> amount)) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的喂养数量不是有效数字。\n";
+            std::cout << "读取失败：第" << lineNumber<< "行的喂养数量不是有效数字。\n";
             return false;
         }
 
@@ -454,20 +448,17 @@ bool FeedingManager::loadFromFile(
 
         if (!stream.eof() ||
             !std::isfinite(amount) || amount <= 0) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的喂养数量不合法。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的喂养数量不合法。\n";
             return false;
         }
 
         if (fields[6] != "0" && fields[6] != "1") {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的完成状态必须是0或1。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的完成状态必须是0或1。\n";
             return false;
         }
 
         if (inventory.findFood(fields[2]) == nullptr) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行对应的食物不存在。\n";
+            std::cout << "读取失败：第" << lineNumber << "行对应的食物不存在。\n";
             return false;
         }
 
@@ -496,7 +487,9 @@ bool FeedingManager::loadFromFile(
               << plans.size() << "条计划。\n";
     return true;
 }
-// 显示全部喂养记录
+/**
+ * @brief 输出全部历史喂养记录。
+ */
 void FeedingManager::showAllRecords() const {
     if (records.empty()) {
         std::cout << "当前没有喂养记录。\n";
@@ -509,7 +502,9 @@ void FeedingManager::showAllRecords() const {
     }
 }
 
-// 按动物编号查询记录
+/**
+ * @brief 输出指定动物的历史喂养记录。
+ */
 void FeedingManager::showRecordsByAnimal(
     const std::string& animalId) const {
 
@@ -527,7 +522,9 @@ void FeedingManager::showRecordsByAnimal(
         std::cout << "该动物没有喂养记录。\n";
     }
 }
-// 保存全部历史喂养记录
+/**
+ * @brief 将全部历史喂养记录覆盖写入文件。
+ */
 bool FeedingManager::saveRecordsToFile(
     const std::string& filename) const {
 
@@ -548,8 +545,7 @@ bool FeedingManager::saveRecordsToFile(
             !validField(record.getKeeperName()) ||
             !validField(record.getCompletedAt())) {
 
-            std::cout << "保存失败：记录字段不能为空，"
-                         "也不能包含竖线或换行符。\n";
+            std::cout << "保存失败：记录字段不能为空，不能包含竖线或换行符。\n";
             return false;
         }
 
@@ -564,8 +560,7 @@ bool FeedingManager::saveRecordsToFile(
     std::ofstream file(filename);
 
     if (!file.is_open()) {
-        std::cout << "保存失败：无法打开文件 "
-                  << filename << "\n";
+        std::cout << "保存失败：无法打开文件 " << filename << "\n";
         return false;
     }
 
@@ -587,24 +582,23 @@ bool FeedingManager::saveRecordsToFile(
     file.close();
 
     if (!file) {
-        std::cout << "保存失败：记录文件写入"
-                     "或关闭发生错误。\n";
+        std::cout << "保存失败：记录文件写入或关闭时发生了错误。\n";
         return false;
     }
 
-    std::cout << "喂养记录已保存到："
-              << filename << "\n";
+    std::cout << "喂养记录已保存到：" << filename << "\n";
     return true;
 }
-// 读取历史记录，全部检查成功后才替换内存中的记录
+/**
+ * @brief 校验并加载历史记录，全部成功后替换当前记录。
+ */
 bool FeedingManager::loadRecordsFromFile(
     const std::string& filename) {
 
     std::ifstream file(filename);
 
     if (!file.is_open()) {
-        std::cout << "读取失败：无法打开文件 "
-                  << filename << "\n";
+        std::cout << "读取失败：无法打开文件 "<< filename << "\n";
         return false;
     }
 
@@ -660,8 +654,7 @@ bool FeedingManager::loadRecordsFromFile(
                     == std::string::npos ||
                 field.find_first_of("\r\n")
                     != std::string::npos) {
-                std::cout << "读取失败：第" << lineNumber
-                          << "行包含空字段或非法换行。\n";
+                std::cout << "读取失败：第" << lineNumber << "行包含空字段或非法换行。\n";
                 return false;
             }
         }
@@ -670,8 +663,7 @@ bool FeedingManager::loadRecordsFromFile(
         for (int i = 0; i < 4; ++i) {
             if (fields[i].find_first_of(" \t\r\n")
                     != std::string::npos) {
-                std::cout << "读取失败：第" << lineNumber
-                          << "行的编号包含空白。\n";
+                std::cout << "读取失败：第" << lineNumber << "行的编号包含空白。\n";
                 return false;
             }
         }
@@ -679,8 +671,7 @@ bool FeedingManager::loadRecordsFromFile(
         // 当前设计中，每条计划只能产生一条记录
         if (!usedRecordIds.insert(fields[0]).second ||
             !usedPlanIds.insert(fields[1]).second) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的记录编号或计划编号重复。\n";
+            std::cout << "读取失败：第" << lineNumber<< "行的记录编号或计划编号重复。\n";
             return false;
         }
 
@@ -688,8 +679,7 @@ bool FeedingManager::loadRecordsFromFile(
         std::istringstream amountStream(fields[4]);
 
         if (!(amountStream >> amount)) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的数量不是有效数字。\n";
+            std::cout << "读取失败：第" << lineNumber<< "行的数量不是有效数字。\n";
             return false;
         }
 
@@ -697,8 +687,7 @@ bool FeedingManager::loadRecordsFromFile(
 
         if (!amountStream.eof() ||
             !std::isfinite(amount) || amount <= 0) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的数量不合法。\n";
+            std::cout << "读取失败：第" << lineNumber<< "行的数量不合法。\n";
             return false;
         }
 
@@ -754,8 +743,7 @@ bool FeedingManager::loadRecordsFromFile(
         }
 
         if (!validTime) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的完成时间不合法。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的完成时间不合法。\n";
             return false;
         }
 
@@ -767,8 +755,7 @@ bool FeedingManager::loadRecordsFromFile(
             plan->getAnimalId() != fields[2] ||
             plan->getFoodId() != fields[3] ||
             plan->getAmount() != amount) {
-            std::cout << "读取失败：第" << lineNumber
-                      << "行的记录与对应计划不一致。\n";
+            std::cout << "读取失败：第" << lineNumber << "行的记录与对应计划不一致。\n";
             return false;
         }
 
@@ -786,11 +773,12 @@ bool FeedingManager::loadRecordsFromFile(
     // 只恢复历史记录，不执行喂养，也不扣库存
     records = std::move(loadedRecords);
 
-    std::cout << "喂养记录读取成功，共加载 "
-              << records.size() << "条记录。\n";
+    std::cout << "喂养记录读取成功，共加载 "<< records.size() << "条记录。\n";
     return true;
 }
-// 按电脑当前本地日期显示今日任务
+/**
+ * @brief 按系统本地日期输出今日喂养任务及完成数量。
+ */
 void FeedingManager::showTodayPlans() const {
     std::time_t now = std::time(nullptr);
 
@@ -840,7 +828,9 @@ void FeedingManager::showTodayPlans() const {
     std::cout << "已完成：" << completed << "\n";
     std::cout << "未完成：" << total - completed << "\n";
 }
-// 根据历史喂养记录统计实际消耗
+/**
+ * @brief 按食物编号和单位汇总全部历史喂养消耗。
+ */
 void FeedingManager::showFoodConsumption() const {
     if (records.empty()) {
         std::cout << "当前没有喂养记录，暂无消耗统计。\n";
@@ -890,7 +880,9 @@ void FeedingManager::showFoodConsumption() const {
         std::cout << "----------------------------------\n";
     }
 }
-// 按实际完成日期统计食物消耗
+/**
+ * @brief 按实际完成日期汇总食物消耗。
+ */
 void FeedingManager::showFoodConsumptionByDate(
     const std::string& date) const {
 

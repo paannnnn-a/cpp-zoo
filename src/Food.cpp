@@ -1,7 +1,14 @@
+/**
+ * @file Food.cpp
+ * @brief 实现食物基本信息访问、库存操作和预警判断。
+ */
+
 #include "../include/Food.h"
 #include <iostream>
 
-// 构造函数
+/**
+ * @brief 初始化食物的基本信息和库存。
+ */
 Food::Food(const std::string& id,
            const std::string& name,
            double stock,
@@ -14,7 +21,9 @@ Food::Food(const std::string& id,
       warningStock(warningStock) {
 }
 
-// 食物入库
+/**
+ * @brief 增加食物库存，并输出操作结果。
+ */
 void Food::addStock(double amount) {
     if (amount <= 0) {
         std::cout << "入库数量必须大于0！" << std::endl;
@@ -25,7 +34,9 @@ void Food::addStock(double amount) {
     std::cout << "入库成功！" << std::endl;
 }
 
-// 食物出库
+/**
+ * @brief 在数量有效且库存足够时扣减库存。
+ */
 bool Food::reduceStock(double amount) {
     if (amount <= 0) {
         std::cout << "出库数量必须大于0！" << std::endl;
@@ -42,12 +53,16 @@ bool Food::reduceStock(double amount) {
     return true;
 }
 
-// 判断库存是否低于或等于预警值
+/**
+ * @brief 判断库存是否已达到预警范围。
+ */
 bool Food::isLowStock() const {
     return stock <= warningStock;
 }
 
-// 显示食物基本信息
+/**
+ * @brief 输出食物基本信息、保存建议和库存预警状态。
+ */
 void Food::displayInfo() const {
     std::cout << "食物编号：" << id << std::endl;
     std::cout << "食物名称：" << name << std::endl;
@@ -63,34 +78,53 @@ void Food::displayInfo() const {
     }
 }
 
-// Getter
+/**
+ * @brief 获取食物编号。
+ */
 std::string Food::getId() const {
     return id;
 }
 
+/**
+ * @brief 获取食物名称。
+ */
 std::string Food::getName() const {
     return name;
 }
 
+/**
+ * @brief 获取当前库存数量。
+ */
 double Food::getStock() const {
     return stock;
 }
 
+/**
+ * @brief 获取计量单位。
+ */
 std::string Food::getUnit() const {
     return unit;
 }
 
+/**
+ * @brief 获取库存预警阈值。
+ */
 double Food::getWarningStock() const {
     return warningStock;
 }
 
-// Setter
+/**
+ * @brief 更新食物名称。
+ */
 void Food::setName(const std::string& newName) {
     if (!newName.empty()) {
         name = newName;
     }
 }
 
+/**
+ * @brief 更新库存预警阈值。
+ */
 void Food::setWarningStock(double newWarningStock) {
     if (newWarningStock >= 0) {
         warningStock = newWarningStock;

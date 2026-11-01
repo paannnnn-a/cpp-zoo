@@ -1,15 +1,24 @@
+/**
+ * @file FeedingMenu.cpp
+ * @brief 实现喂养管理菜单和交互输入处理。
+ */
+
 #include "../include/FeedingMenu.h"
 
 #include <iostream>
 #include <string>
 #include <cmath>
 #include <sstream>
-// 使用已有的饲养管理器
+/**
+ * @brief 初始化喂养菜单并绑定饲养管理器。
+ */
 FeedingMenu::FeedingMenu(FeedingManager& manager)
     : feeding(manager) {
 }
 
-// 显示菜单
+/**
+ * @brief 输出喂养管理菜单选项。
+ */
 void FeedingMenu::showMenu() const {
     std::cout << "\n========== 喂养管理 ==========\n";
     std::cout << "1. 新增喂养计划\n";
@@ -29,7 +38,9 @@ void FeedingMenu::showMenu() const {
     std::cout << "请选择：";
 }
 
-// 按日期查询计划
+/**
+ * @brief 读取日期并显示该日期的计划。
+ */
 void FeedingMenu::queryByDate() {
     std::string date;
 
@@ -48,7 +59,9 @@ void FeedingMenu::queryByDate() {
     feeding.showPlansByDate(date);
 }
 
-// 按动物编号查询计划
+/**
+ * @brief 读取动物编号并显示该动物的计划。
+ */
 void FeedingMenu::queryByAnimal() {
     std::string animalId;
 
@@ -66,7 +79,9 @@ void FeedingMenu::queryByAnimal() {
     feeding.showPlansByAnimal(animalId);
 }
 
-// 菜单循环
+/**
+ * @brief 运行喂养菜单循环，直到请求返回或退出。
+ */
 char FeedingMenu::run() {
     std::string choice;
 
@@ -88,10 +103,8 @@ char FeedingMenu::run() {
         } else if (choice == "5") {
             completePlan();
         } else if (choice == "6") {
-            std::cout << "返回主菜单或正常退出时，"
-                         "程序会保存库存、计划和记录。\n";
-            std::cout << "确认保存成功后，"
-                         "重新启动程序即可加载数据。\n";
+            std::cout << "返回主菜单或正常退出之后，程序会保存库存、计划和记录。\n";
+            std::cout << "保存成功后，重新启动程序可以加载数据。\n";
         } else if (choice == "7") {
             feeding.showAllRecords();
         } else if (choice == "8") {
@@ -115,8 +128,7 @@ char FeedingMenu::run() {
         } else if (choice == "11") {
             std::string date;
 
-            std::cout << "请输入实际完成日期"
-                         "（YYYY-MM-DD，输入0取消）：";
+            std::cout << "请输入实际完成日期YYYY-MM-DD，输入0取消）：";
 
             if (!std::getline(std::cin, date)) {
                 return 'Q';
@@ -151,7 +163,9 @@ char FeedingMenu::run() {
         }
     }
 }
-// 新增喂养计划
+/**
+ * @brief 交互录入并校验喂养计划，确认后添加。
+ */
 void FeedingMenu::addPlan() {
     std::cout << "\n========== 新增喂养计划 ==========\n";
     std::cout << "任意录入步骤输入 /cancel 可取消。\n";
@@ -174,8 +188,7 @@ void FeedingMenu::addPlan() {
             if (value.empty() ||
                 value.find_first_of(" \t\r\n|")
                     != std::string::npos) {
-                std::cout << "内容不能为空，"
-                             "也不能包含空白或竖线。\n";
+                std::cout << "内容不能为空，也不能有空白或竖线。\n";
                 continue;
             }
 
@@ -334,7 +347,9 @@ void FeedingMenu::addPlan() {
     // 管理器继续检查计划编号是否重复、食物是否存在
     feeding.addPlan(plan);
 }
-// 确认后执行喂养计划
+/**
+ * @brief 读取计划编号和人员姓名，确认后请求执行喂养。
+ */
 void FeedingMenu::completePlan() {
     std::cout << "\n========== 完成喂养计划 ==========\n";
 
@@ -357,8 +372,7 @@ void FeedingMenu::completePlan() {
 
     if (planId.empty() ||
         planId.find_first_of(" \t\r\n|") != std::string::npos) {
-        std::cout << "计划编号不能为空，"
-                     "也不能包含空白或竖线。\n";
+        std::cout << "计划编号不能为空，也不能有空白或竖线。\n";
         return;
     }
 

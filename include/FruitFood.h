@@ -1,16 +1,35 @@
+/**
+ * @file FruitFood.h
+ * @brief 水果类食物，提供水果饲料的类型名称和保存建议。
+ */
+
 #ifndef FRUITFOOD_H
 #define FRUITFOOD_H
 
 #include "Food.h"
 
-// 水果类食物
+/**
+ * @brief 水果类食物，提供水果饲料的类型名称和保存建议。
+ */
 class FruitFood : public Food {
 public:
-    // 继承Food类的构造函数
+    /**
+     * @copydoc Food::Food
+     */
     using Food::Food;
 
-    // 重写父类的虚函数
+    /**
+     * @brief 获取水果类食物的类型名称。
+     *
+     * @return 类型名称“水果类”。
+     */
     std::string getType() const override;
+
+    /**
+     * @brief 获取水果类食物的保存建议。
+     *
+     * @return 冷藏保存，并注意保鲜。
+     */
     std::string getStorageAdvice() const override;
 };
 

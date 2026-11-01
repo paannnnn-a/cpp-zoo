@@ -1,10 +1,17 @@
+/**
+ * @file FeedingPlan.cpp
+ * @brief 实现喂养计划的数据访问、状态更新和信息输出。
+ */
+
 #include "../include/FeedingPlan.h"
 
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
 
-// 构造函数：创建一条未完成的喂养计划
+/**
+ * @brief 创建一条未完成的喂养计划。
+ */
 FeedingPlan::FeedingPlan(
     const std::string& planId,
     const std::string& animalId,
@@ -28,35 +35,58 @@ FeedingPlan::FeedingPlan(
     }
 }
 
+/**
+ * @brief 获取计划编号。
+ */
 std::string FeedingPlan::getPlanId() const {
     return planId;
 }
 
+/**
+ * @brief 获取动物编号。
+ */
 std::string FeedingPlan::getAnimalId() const {
     return animalId;
 }
 
+/**
+ * @brief 获取食物编号。
+ */
 std::string FeedingPlan::getFoodId() const {
     return foodId;
 }
 
+/**
+ * @brief 获取计划日期。
+ */
 std::string FeedingPlan::getDate() const {
     return date;
 }
 
+/**
+ * @brief 获取计划时间。
+ */
 std::string FeedingPlan::getTime() const {
     return time;
 }
 
+/**
+ * @brief 获取计划喂养数量。
+ */
 double FeedingPlan::getAmount() const {
     return amount;
 }
 
+/**
+ * @brief 查询计划是否已经完成。
+ */
 bool FeedingPlan::isCompleted() const {
     return completed;
 }
 
-// 标记完成，防止重复完成同一条计划
+/**
+ * @brief 将未完成的计划标记为已完成。
+ */
 bool FeedingPlan::markCompleted() {
     if (completed) {
         return false;
@@ -66,7 +96,9 @@ bool FeedingPlan::markCompleted() {
     return true;
 }
 
-// 显示计划信息
+/**
+ * @brief 输出计划字段和完成状态。
+ */
 void FeedingPlan::display() const {
     std::cout << "计划编号：" << planId << "\n";
     std::cout << "动物编号：" << animalId << "\n";

@@ -1,11 +1,20 @@
+/**
+ * @file MeatFood.cpp
+ * @brief 实现肉类食物的类型名称和保存建议。
+ */
+
 #include "../include/MeatFood.h"
 
-// 返回食物类型
+/**
+ * @brief 获取肉类食物的类型名称。
+ */
 std::string MeatFood::getType() const {
     return "肉类";
 }
 
-// 返回保存要求
+/**
+ * @brief 获取肉类食物的保存建议。
+ */
 std::string MeatFood::getStorageAdvice() const {
     return "需要冷藏或冷冻保存";
 }
