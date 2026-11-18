@@ -1,3 +1,5 @@
+#define NOMINMAX
+#include <Windows.h>
 #include <iostream>
 #include <string>
 
@@ -13,6 +15,8 @@
 #include "include/FeedingManager.h"
 #include "include/FeedingMenu.h"
 
+#include "include/visitor/visitormenu.h"
+
 /**
  * 功能：创建并加载A/B子系统，调度菜单，统一保存和退出。
  *
@@ -23,6 +27,9 @@
  * 1：启动加载失败，或输入结束后仍无法完成保存。
  */
 int main() {
+    // 设置控制台输入输出编码
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
     const std::string dataDirectory = "data";
     const std::string foodFilename = "data/foods.txt";
     const std::string planFilename = "data/feeding_plans.txt";
@@ -88,6 +95,13 @@ int main() {
 
     AnimalMenu animalMenu(animals, zones, aStorage);
     HealthMenu healthMenu(animals, health, aStorage);
+    // 创建并加载游客与票务模块
+    VisitorMenu visitorMenu(zones, animals, dataDirectory);
+    if (!visitorMenu.load()) {
+        std::cout << "游客与票务数据加载失败："
+            << visitorMenu.getlasterror() << '\n';
+        return 1;
+    }
 
     /**
      * 功能：统一保存A/B数据。
@@ -133,8 +147,13 @@ int main() {
             success = false;
         }
 
+        if (!visitorMenu.save()) {
+            std::cout << "游客与票务数据保存失败："
+                << visitorMenu.getlasterror() << '\n';
+            success = false;
+        }
         return success;
-        };
+    };
 
     /**
      * 功能：确认用户是否请求退出系统。
@@ -177,6 +196,7 @@ int main() {
         std::cout << "2. 喂养计划管理\n";
         std::cout << "3. 动物管理\n";
         std::cout << "4. 动物健康管理\n";
+        std::cout << "5. 游客与票务服务\n";
         std::cout << "S. 保存全部数据\n";
         std::cout << "Q. 退出系统\n";
         std::cout << "请选择：";
@@ -192,7 +212,8 @@ int main() {
             choice == "1" ||
             choice == "2" ||
             choice == "3" ||
-            choice == "4"
+            choice == "4" ||
+            choice == "5"
             ) {
             char result = '0';
 
@@ -205,8 +226,11 @@ int main() {
             else if (choice == "3") {
                 result = animalMenu.run();
             }
-            else {
+            else if (choice == "4") {
                 result = healthMenu.run();
+            }
+            else {
+                result = visitorMenu.run();
             }
 
             // A菜单已经有自动保存；这里再做一次统一保存，
