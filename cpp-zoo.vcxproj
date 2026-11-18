@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{E2E94D8F-403C-41B7-879B-13F61E31D3C0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>CppZoo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Release'">false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)build\obj\$(Platform)\$(Configuration)\</IntDir>
+    <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\FeedingManager.cpp" />
+    <ClCompile Include="src\FeedingMenu.cpp" />
+    <ClCompile Include="src\FeedingPlan.cpp" />
+    <ClCompile Include="src\FeedingRecord.cpp" />
+    <ClCompile Include="src\Food.cpp" />
+    <ClCompile Include="src\FruitFood.cpp" />
+    <ClCompile Include="src\InventoryManager.cpp" />
+    <ClCompile Include="src\InventoryMenu.cpp" />
+    <ClCompile Include="src\MeatFood.cpp" />
+    <ClCompile Include="src\PlantFood.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\FeedingManager.h" />
+    <ClInclude Include="include\FeedingMenu.h" />
+    <ClInclude Include="include\FeedingPlan.h" />
+    <ClInclude Include="include\FeedingRecord.h" />
+    <ClInclude Include="include\Food.h" />
+    <ClInclude Include="include\FruitFood.h" />
+    <ClInclude Include="include\InventoryManager.h" />
+    <ClInclude Include="include\InventoryMenu.h" />
+    <ClInclude Include="include\MeatFood.h" />
+    <ClInclude Include="include\PlantFood.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\visitor\authservice.h" />
+    <ClInclude Include="include\visitor\couponmanager.h" />
+    <ClInclude Include="include\visitor\cstorage.h" />
+    <ClInclude Include="include\visitor\feedbackmanager.h" />
+    <ClInclude Include="include\visitor\operationlogger.h" />
+    <ClInclude Include="include\visitor\order.h" />
+    <ClInclude Include="include\visitor\routemanager.h" />
+    <ClInclude Include="include\visitor\session.h" />
+    <ClInclude Include="include\visitor\ticket.h" />
+    <ClInclude Include="include\visitor\ticketcatalog.h" />
+    <ClInclude Include="include\visitor\ticketmanager.h" />
+    <ClInclude Include="include\visitor\visitor.h" />
+    <ClInclude Include="include\visitor\visitorcommon.h" />
+    <ClInclude Include="include\visitor\visitormanager.h" />
+    <ClInclude Include="include\visitor\visitorutils.h" />
+    <ClCompile Include="src\visitor\authservice.cpp" />
+    <ClCompile Include="src\visitor\couponmanager.cpp" />
+    <ClCompile Include="src\visitor\cstorage.cpp" />
+    <ClCompile Include="src\visitor\feedbackmanager.cpp" />
+    <ClCompile Include="src\visitor\operationlogger.cpp" />
+    <ClCompile Include="src\visitor\order.cpp" />
+    <ClCompile Include="src\visitor\routemanager.cpp" />
+    <ClCompile Include="src\visitor\session.cpp" />
+    <ClCompile Include="src\visitor\ticket.cpp">
+    </ClCompile>
+    <ClCompile Include="src\visitor\ticketcatalog.cpp" />
+    <ClCompile Include="src\visitor\ticketmanager.cpp" />
+    <ClCompile Include="src\visitor\visitor.cpp" />
+    <ClCompile Include="src\visitor\visitormanager.cpp" />
+    <ClCompile Include="src\visitor\visitorutils.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\visitor\ticketoperations.cpp" />
+    <ClCompile Include="src\visitor\ticketstorage.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\visitor\visitormenu.h" />
+    <ClCompile Include="src\visitor\visitormenu.cpp" />
+    <ClCompile Include="src\visitor\visitoraccountmenu.cpp" />
+    <ClCompile Include="src\visitor\visitorticketmenu.cpp" />
+    <ClCompile Include="src\visitor\visitorservicemenu.cpp" />
+    <ClCompile Include="src\visitor\visitoradminmenu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Animal.cpp" />
+    <ClCompile Include="src\AnimalCommon.cpp" />
+    <ClCompile Include="src\AnimalManager.cpp" />
+    <ClCompile Include="src\AnimalMenu.cpp" />
+    <ClCompile Include="src\AStorage.cpp" />
+    <ClCompile Include="src\Bird.cpp" />
+    <ClCompile Include="src\DiseaseRecord.cpp" />
+    <ClCompile Include="src\HealthCheckRecord.cpp" />
+    <ClCompile Include="src\HealthManager.cpp" />
+    <ClCompile Include="src\HealthMenu.cpp" />
+    <ClCompile Include="src\Mammal.cpp" />
+    <ClCompile Include="src\MedicalRecord.cpp" />
+    <ClCompile Include="src\RecoveryRecord.cpp" />
+    <ClCompile Include="src\Reptile.cpp" />
+    <ClCompile Include="src\TreatmentRecord.cpp" />
+    <ClCompile Include="src\Zone.cpp" />
+    <ClCompile Include="src\ZoneManager.cpp" />
+    <ClInclude Include="include\Animal.h" />
+    <ClInclude Include="include\AnimalCommon.h" />
+    <ClInclude Include="include\AnimalManager.h" />
+    <ClInclude Include="include\AnimalMenu.h" />
+    <ClInclude Include="include\AStorage.h" />
+    <ClInclude Include="include\Bird.h" />
+    <ClInclude Include="include\ConsoleInput.h" />
+    <ClInclude Include="include\DiseaseRecord.h" />
+    <ClInclude Include="include\HealthCheckRecord.h" />
+    <ClInclude Include="include\HealthManager.h" />
+    <ClInclude Include="include\HealthMenu.h" />
+    <ClInclude Include="include\Mammal.h" />
+    <ClInclude Include="include\MedicalRecord.h" />
+    <ClInclude Include="include\RecoveryRecord.h" />
+    <ClInclude Include="include\Reptile.h" />
+    <ClInclude Include="include\TreatmentRecord.h" />
+    <ClInclude Include="include\Zone.h" />
+    <ClInclude Include="include\ZoneManager.h" />
+    <ClInclude Include="include\detail\FieldValidation.h" />
+    <ClInclude Include="include\detail\TextIO.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+adult|5000|1
+student|2500|1
+child|2000|1
