@@ -15,24 +15,24 @@
 #include <set>
 #include <system_error>
 
-//·Çconst°æ±¾;¸ù¾İ¶¯Îï±àºÅÔÚÄÚ²¿ÈİÆ÷Àï²éÕÒ¶ÔÓ¦µÄ¶¯Îï£¬·µ»Ø¿ÉĞŞ¸ÄµÄÖ¸Õë£¬Ã»ÓĞ¾Í·µ»Ønullptr¡£
+//éconstç‰ˆæœ¬;æ ¹æ®åŠ¨ç‰©ç¼–å·åœ¨å†…éƒ¨å®¹å™¨é‡ŒæŸ¥æ‰¾å¯¹åº”çš„åŠ¨ç‰©ï¼Œè¿”å›å¯ä¿®æ”¹çš„æŒ‡é’ˆï¼Œæ²¡æœ‰å°±è¿”å›nullptrã€‚
 /**
- * @brief ±éÀú animals ²¢±È½Ï±àºÅ£¬ÃüÖĞ·µ»ØÄÚ²¿Ö¸Õë£¬Î´ÃüÖĞ·µ»Ø nullptr£»²»×ªÒÆËùÓĞÈ¨¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
+ * @brief éå† animals å¹¶æ¯”è¾ƒç¼–å·ï¼Œå‘½ä¸­è¿”å›å†…éƒ¨æŒ‡é’ˆï¼Œæœªå‘½ä¸­è¿”å› nullptrï¼›ä¸è½¬ç§»æ‰€æœ‰æƒã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
  */
 Animal* AnimalManager::findAnimalInternal(const std::string& animalId) {
     for (const auto& animal : animals) {
         if (animal->getId() == animalId) {
-            return animal.get();//unique_ptrÀï×Ô´øµÄº¯Êı¡£
+            return animal.get();//unique_ptré‡Œè‡ªå¸¦çš„å‡½æ•°ã€‚
         }
     }
     return nullptr;
 }
 
-//const°æ±¾;¸ù¾İ¶¯Îï±àºÅÔÚÄÚ²¿ÈİÆ÷Àï²éÕÒ¶ÔÓ¦µÄ¶¯Îï£¬·µ»ØÖ»¶ÁµÄÖ¸Õë¡£
+//constç‰ˆæœ¬;æ ¹æ®åŠ¨ç‰©ç¼–å·åœ¨å†…éƒ¨å®¹å™¨é‡ŒæŸ¥æ‰¾å¯¹åº”çš„åŠ¨ç‰©ï¼Œè¿”å›åªè¯»çš„æŒ‡é’ˆã€‚
 /**
- * @brief ±éÀú animals ²¢±È½Ï±àºÅ£¬ÃüÖĞ·µ»ØÄÚ²¿Ö¸Õë£¬Î´ÃüÖĞ·µ»Ø nullptr£»²»×ªÒÆËùÓĞÈ¨¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
+ * @brief éå† animals å¹¶æ¯”è¾ƒç¼–å·ï¼Œå‘½ä¸­è¿”å›å†…éƒ¨æŒ‡é’ˆï¼Œæœªå‘½ä¸­è¿”å› nullptrï¼›ä¸è½¬ç§»æ‰€æœ‰æƒã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
  */
 const Animal* AnimalManager::findAnimalInternal(const std::string& animalId) const {
     for (const auto& animal : animals) {
@@ -43,10 +43,10 @@ const Animal* AnimalManager::findAnimalInternal(const std::string& animalId) con
     return nullptr;
 }
 
-//×Ô¶¯Éú³ÉÒ»¸öÉĞÎ´Ê¹ÓÃ¹ıµÄ¶¯Îï±àºÅ£º´Ó P001 ¿ªÊ¼£¬Éú³É±àºÅ£¬ÀûÓÃfindAnimalInternal()Ñ°ÕÒµÚÒ»¸öÃ»ÓĞÊ¹ÓÃ¹ıµÄ±àºÅ¡£
+//è‡ªåŠ¨ç”Ÿæˆä¸€ä¸ªå°šæœªä½¿ç”¨è¿‡çš„åŠ¨ç‰©ç¼–å·ï¼šä» P001 å¼€å§‹ï¼Œç”Ÿæˆç¼–å·ï¼Œåˆ©ç”¨findAnimalInternal()å¯»æ‰¾ç¬¬ä¸€ä¸ªæ²¡æœ‰ä½¿ç”¨è¿‡çš„ç¼–å·ã€‚
 /**
- * @brief ´Ó 1 ¿ªÊ¼µİÔö£¬¸ñÊ½»¯Îª P ¼ÓÖÁÉÙÈıÎ»Êı×Ö£¬·µ»ØµÚÒ»¸öÎ´Õ¼ÓÃ±àºÅ¡£
- * @note ²ÎÊı£ºÎŞ¡£
+ * @brief ä» 1 å¼€å§‹é€’å¢ï¼Œæ ¼å¼åŒ–ä¸º P åŠ è‡³å°‘ä¸‰ä½æ•°å­—ï¼Œè¿”å›ç¬¬ä¸€ä¸ªæœªå ç”¨ç¼–å·ã€‚
+ * @note å‚æ•°ï¼šæ— ã€‚
  */
 std::string AnimalManager::generateAnimalId() const {
     for (std::size_t number = 1; ; ++number) {
@@ -59,39 +59,39 @@ std::string AnimalManager::generateAnimalId() const {
     }
 }
 
-//Ìí¼ÓÒ»¸öÒÑ¾­´´½¨ºÃµÄ¶¯Îïµ½¹ÜÀíÆ÷£¬²ÎÊı±íÊ¾°Ñ¸Ã¶¯ÎïµÄ¡°¹ÜÀíÈ¨´«½øÀ´£»²ÎÊı£º´´½¨ºÃµÄ¶¯ÎïÖÇÄÜÖ¸Õë¡£
+//æ·»åŠ ä¸€ä¸ªå·²ç»åˆ›å»ºå¥½çš„åŠ¨ç‰©åˆ°ç®¡ç†å™¨ï¼Œå‚æ•°è¡¨ç¤ºæŠŠè¯¥åŠ¨ç‰©çš„â€œç®¡ç†æƒä¼ è¿›æ¥ï¼›å‚æ•°ï¼šåˆ›å»ºå¥½çš„åŠ¨ç‰©æ™ºèƒ½æŒ‡é’ˆã€‚
 /**
- * @brief Ğ£Ñé¶ÔÏó¡¢±àºÅÎ¨Ò»ĞÔ¼°Ô°Çø¹ØÁª£»×Ö¶ÎÖØÔØÏÈ°´Àà±ğ¹¹ÔìÅÉÉú¶ÔÏó£¬ÔÙÒÆ½» unique_ptr ËùÓĞÈ¨¡£
- * @param animal ´ı´¦Àí¶¯Îï¶ÔÏó£»unique_ptr ²ÎÊı×ªÒÆËùÓĞÈ¨¡£
+ * @brief æ ¡éªŒå¯¹è±¡ã€ç¼–å·å”¯ä¸€æ€§åŠå›­åŒºå…³è”ï¼›å­—æ®µé‡è½½å…ˆæŒ‰ç±»åˆ«æ„é€ æ´¾ç”Ÿå¯¹è±¡ï¼Œå†ç§»äº¤ unique_ptr æ‰€æœ‰æƒã€‚
+ * @param animal å¾…å¤„ç†åŠ¨ç‰©å¯¹è±¡ï¼›unique_ptr å‚æ•°è½¬ç§»æ‰€æœ‰æƒã€‚
  */
 bool AnimalManager::addAnimal(std::unique_ptr<Animal> animal) {
-    // ·ÀÖ¹µ÷ÓÃ·½´«Èë¿ÕÖÇÄÜÖ¸Õë¡£
+    // é˜²æ­¢è°ƒç”¨æ–¹ä¼ å…¥ç©ºæ™ºèƒ½æŒ‡é’ˆã€‚
     if (!animal) {
         return false;
     }
-    // ¶¯Îï±àºÅ²»ÄÜÖØ¸´¡£
+    // åŠ¨ç‰©ç¼–å·ä¸èƒ½é‡å¤ã€‚
     if (findAnimalInternal(animal->getId()) != nullptr) {
         return false;
     }
-    // Animal Ö»¼ì²éÔ°Çø±àºÅ¸ñÊ½£»Manager ¸ºÔğ¼ì²éÕâ¸öÔ°ÇøÊÇ·ñÕæµÄ´æÔÚ¡£
+    // Animal åªæ£€æŸ¥å›­åŒºç¼–å·æ ¼å¼ï¼›Manager è´Ÿè´£æ£€æŸ¥è¿™ä¸ªå›­åŒºæ˜¯å¦çœŸçš„å­˜åœ¨ã€‚
     if (!zones.zoneExists(animal->getZoneId())) {
         return false;
     }
-    // °Ñ¶ÔÏóËùÓĞÈ¨×ª½»¸ø¶¯ÎïÈİÆ÷¡£
+    // æŠŠå¯¹è±¡æ‰€æœ‰æƒè½¬äº¤ç»™åŠ¨ç‰©å®¹å™¨ã€‚
     animals.push_back(std::move(animal));
 
     return true;
 }
 
-//¸ù¾İÀà±ğºÍ¸÷ÖÖĞÅÏ¢´´½¨Ò»Ö»ĞÂ¶¯Îï£¬²¢¼ÓÈë¹ÜÀíÆ÷¡£
+//æ ¹æ®ç±»åˆ«å’Œå„ç§ä¿¡æ¯åˆ›å»ºä¸€åªæ–°åŠ¨ç‰©ï¼Œå¹¶åŠ å…¥ç®¡ç†å™¨ã€‚
 /**
- * @brief Ğ£Ñé¶ÔÏó¡¢±àºÅÎ¨Ò»ĞÔ¼°Ô°Çø¹ØÁª£»×Ö¶ÎÖØÔØÏÈ°´Àà±ğ¹¹ÔìÅÉÉú¶ÔÏó£¬ÔÙÒÆ½» unique_ptr ËùÓĞÈ¨¡£
- * @param category Mammal¡¢Bird »ò Reptile Àà±ğ±àÂë¡£
- * @param name Ãû³Æ¡£
- * @param species ÎïÖÖ¡£
- * @param age ·Ç¸ºÄêÁä¡£
- * @param gender ĞÔ±ğÎÄ±¾¡£
- * @param zoneId ËùÊôÔ°Çø±àºÅ¡£
+ * @brief æ ¡éªŒå¯¹è±¡ã€ç¼–å·å”¯ä¸€æ€§åŠå›­åŒºå…³è”ï¼›å­—æ®µé‡è½½å…ˆæŒ‰ç±»åˆ«æ„é€ æ´¾ç”Ÿå¯¹è±¡ï¼Œå†ç§»äº¤ unique_ptr æ‰€æœ‰æƒã€‚
+ * @param category Mammalã€Bird æˆ– Reptile ç±»åˆ«ç¼–ç ã€‚
+ * @param name åç§°ã€‚
+ * @param species ç‰©ç§ã€‚
+ * @param age éè´Ÿå¹´é¾„ã€‚
+ * @param gender æ€§åˆ«æ–‡æœ¬ã€‚
+ * @param zoneId æ‰€å±å›­åŒºç¼–å·ã€‚
  */
 bool AnimalManager::addAnimal(
     const std::string& category,
@@ -105,7 +105,7 @@ bool AnimalManager::addAnimal(
         return false;
     }
 
-    // category ±ØĞëÊ¹ÓÃÍ³Ò»Àà±ğÃû³Æ¡£
+    // category å¿…é¡»ä½¿ç”¨ç»Ÿä¸€ç±»åˆ«åç§°ã€‚
     if (category != "Mammal" &&
         category != "Bird" &&
         category != "Reptile") {
@@ -127,21 +127,21 @@ bool AnimalManager::addAnimal(
             animal = std::make_unique<Reptile>(animalId, name, species, age, gender, zoneId);
         }
 
-        // ¸´ÓÃÁíÒ»¸öÖØÔØ£¬Í³Ò»Ö´ĞĞÌí¼Ó¼ì²é¡£
+        // å¤ç”¨å¦ä¸€ä¸ªé‡è½½ï¼Œç»Ÿä¸€æ‰§è¡Œæ·»åŠ æ£€æŸ¥ã€‚
         return addAnimal(std::move(animal));
 
     }
     catch (const std::invalid_argument&) {
-        // ¹¹Ôìº¯Êı·¢ÏÖ·Ç·¨×Ö¶Î¡£
+        // æ„é€ å‡½æ•°å‘ç°éæ³•å­—æ®µã€‚
         return false;
     }
 }
 
-//¸Ä±ä¶¯Îï×´Ì¬£»²ÎÊı£ºID¡¢ĞÂ×´Ì¬¡£
+//æ”¹å˜åŠ¨ç‰©çŠ¶æ€ï¼›å‚æ•°ï¼šIDã€æ–°çŠ¶æ€ã€‚
 /**
- * @brief ÏÈ²éÕÒ¶¯Îï²¢Ğ£ÑéÃ¶¾Ù£¬ÔÙµ÷ÓÃ×´Ì¬ Setter£»Ê§°Ü·µ»Ø false¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
- * @param status ¶¯Îï×´Ì¬¡£
+ * @brief å…ˆæŸ¥æ‰¾åŠ¨ç‰©å¹¶æ ¡éªŒæšä¸¾ï¼Œå†è°ƒç”¨çŠ¶æ€ Setterï¼›å¤±è´¥è¿”å› falseã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
+ * @param status åŠ¨ç‰©çŠ¶æ€ã€‚
  */
 bool AnimalManager::changeAnimalStatus(const std::string& animalId,AnimalStatus status) {
     Animal* animal = findAnimalInternal(animalId);
@@ -159,16 +159,16 @@ bool AnimalManager::changeAnimalStatus(const std::string& animalId,AnimalStatus 
     return true;
 }
 
-//°ÑÒ»¸ö Animal ¶ÔÏó×ª»»³É¶ÔÍâÊ¹ÓÃµÄ AnimalBasicInfo ½á¹¹Ìå£»²ÎÊı£º¶¯ÎïµÄÒıÓÃ£¬²éÑ¯½á¹û¸±±¾µÄÒıÓÃ£¨AnimalBasicInfo½á¹¹Ìå£©¡£
+//æŠŠä¸€ä¸ª Animal å¯¹è±¡è½¬æ¢æˆå¯¹å¤–ä½¿ç”¨çš„ AnimalBasicInfo ç»“æ„ä½“ï¼›å‚æ•°ï¼šåŠ¨ç‰©çš„å¼•ç”¨ï¼ŒæŸ¥è¯¢ç»“æœå‰¯æœ¬çš„å¼•ç”¨ï¼ˆAnimalBasicInfoç»“æ„ä½“ï¼‰ã€‚
 /**
- * @brief ÏÈ²éÑ¯¹ØÁªÔ°Çø£¬ÔÙ¸´ÖÆ¶¯Îï×Ö¶Î²¢¼ÆËãÕ¹³ö×´Ì¬£¬È«²¿Íê³ÉºóĞ´ÈëÊä³ö²ÎÊı¡£
- * @param animal ´ı´¦Àí¶¯Îï¶ÔÏó£»unique_ptr ²ÎÊı×ªÒÆËùÓĞÈ¨¡£
- * @param outInfo ³É¹¦Ê±Ğ´ÈëµÄ²éÑ¯¸±±¾£»Ê§°Ü±£³ÖÔ­Öµ¡£
+ * @brief å…ˆæŸ¥è¯¢å…³è”å›­åŒºï¼Œå†å¤åˆ¶åŠ¨ç‰©å­—æ®µå¹¶è®¡ç®—å±•å‡ºçŠ¶æ€ï¼Œå…¨éƒ¨å®Œæˆåå†™å…¥è¾“å‡ºå‚æ•°ã€‚
+ * @param animal å¾…å¤„ç†åŠ¨ç‰©å¯¹è±¡ï¼›unique_ptr å‚æ•°è½¬ç§»æ‰€æœ‰æƒã€‚
+ * @param outInfo æˆåŠŸæ—¶å†™å…¥çš„æŸ¥è¯¢å‰¯æœ¬ï¼›å¤±è´¥ä¿æŒåŸå€¼ã€‚
  */
 bool AnimalManager::buildBasicInfo(const Animal& animal,AnimalBasicInfo& outInfo) const {
     ZoneInfo zoneInfo;
 
-    // Õı³£Çé¿öÏÂ£¬Ìí¼Ó/¼ÓÔØ¶¯ÎïÊ±ÒÑ±£Ö¤Ô°Çø´æÔÚ£¬ÕâÀïÔÙ¼ì²éÒ»´Î£¬±ÜÃâ·µ»Ø²»ÍêÕûµÄ»ù±¾ĞÅÏ¢¡£
+    // æ­£å¸¸æƒ…å†µä¸‹ï¼Œæ·»åŠ /åŠ è½½åŠ¨ç‰©æ—¶å·²ä¿è¯å›­åŒºå­˜åœ¨ï¼Œè¿™é‡Œå†æ£€æŸ¥ä¸€æ¬¡ï¼Œé¿å…è¿”å›ä¸å®Œæ•´çš„åŸºæœ¬ä¿¡æ¯ã€‚
     if (!zones.getZoneInfo(animal.getZoneId(), zoneInfo)) {
         return false;
     }
@@ -186,26 +186,26 @@ bool AnimalManager::buildBasicInfo(const Animal& animal,AnimalBasicInfo& outInfo
     info.status = animal.getStatus();
     info.onDisplay = isAnimalOnDisplay(animal.getId());
 
-    // ËùÓĞĞÅÏ¢×¼±¸Íê³Éºó£¬ÔÙ°ÑÁÙÊ±¶ÔÏóÒÆµ½outInfo¡£
+    // æ‰€æœ‰ä¿¡æ¯å‡†å¤‡å®Œæˆåï¼Œå†æŠŠä¸´æ—¶å¯¹è±¡ç§»åˆ°outInfoã€‚
     outInfo = std::move(info);
 
     return true;
 }
 
-//ÅĞ¶Ï¶¯ÎïÊÇ·ñ´æÔÚ£»²ÎÊı£ºID¡£
+//åˆ¤æ–­åŠ¨ç‰©æ˜¯å¦å­˜åœ¨ï¼›å‚æ•°ï¼šIDã€‚
 /**
- * @brief µ÷ÓÃÄÚ²¿±àºÅ²éÕÒ£¬¸ù¾İÊÇ·ñµÃµ½·Ç¿ÕÖ¸Õë·µ»Ø½á¹û£»×ª³öºÍËÀÍöµµ°¸ÈÔ´æÔÚ¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
+ * @brief è°ƒç”¨å†…éƒ¨ç¼–å·æŸ¥æ‰¾ï¼Œæ ¹æ®æ˜¯å¦å¾—åˆ°éç©ºæŒ‡é’ˆè¿”å›ç»“æœï¼›è½¬å‡ºå’Œæ­»äº¡æ¡£æ¡ˆä»å­˜åœ¨ã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
  */
 bool AnimalManager::animalExists(const std::string& animalId) const {
     return findAnimalInternal(animalId) != nullptr;
 }
 
-//»ñÈ¡¶¯ÎïµÄ»ù±¾ĞÅÏ¢£»²ÎÊı£º¶¯ÎïµÄID£¬²éÑ¯½á¹û¸±±¾µÄÒıÓÃ£¨AnimalBasicInfo½á¹¹Ìå£©
+//è·å–åŠ¨ç‰©çš„åŸºæœ¬ä¿¡æ¯ï¼›å‚æ•°ï¼šåŠ¨ç‰©çš„IDï¼ŒæŸ¥è¯¢ç»“æœå‰¯æœ¬çš„å¼•ç”¨ï¼ˆAnimalBasicInfoç»“æ„ä½“ï¼‰
 /**
- * @brief °´±àºÅ²éÕÒÄÚ²¿¶ÔÏó£¬ÔÙµ÷ÓÃ buildBasicInfo£»²éÕÒÊ§°Ü·µ»Ø false¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
- * @param outInfo ³É¹¦Ê±Ğ´ÈëµÄ²éÑ¯¸±±¾£»Ê§°Ü±£³ÖÔ­Öµ¡£
+ * @brief æŒ‰ç¼–å·æŸ¥æ‰¾å†…éƒ¨å¯¹è±¡ï¼Œå†è°ƒç”¨ buildBasicInfoï¼›æŸ¥æ‰¾å¤±è´¥è¿”å› falseã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
+ * @param outInfo æˆåŠŸæ—¶å†™å…¥çš„æŸ¥è¯¢å‰¯æœ¬ï¼›å¤±è´¥ä¿æŒåŸå€¼ã€‚
  */
 bool AnimalManager::getAnimalBasicInfo(const std::string& animalId,AnimalBasicInfo& outInfo) const {
     const Animal* animal = findAnimalInternal(animalId);
@@ -218,28 +218,28 @@ bool AnimalManager::getAnimalBasicInfo(const std::string& animalId,AnimalBasicIn
 }
 
 /**
- * ¹¦ÄÜ£º´ÓÄÚ²¿¶¯Îï¶ÔÏó¶ÁÈ¡»ù±¾ĞÅÏ¢¡¢ÄêÁäºÍĞÔ±ğ£¬
- *       ×éºÏÎªÍêÕûµµ°¸²éÑ¯½á¹û¡£
+ * åŠŸèƒ½ï¼šä»å†…éƒ¨åŠ¨ç‰©å¯¹è±¡è¯»å–åŸºæœ¬ä¿¡æ¯ã€å¹´é¾„å’Œæ€§åˆ«ï¼Œ
+ *       ç»„åˆä¸ºå®Œæ•´æ¡£æ¡ˆæŸ¥è¯¢ç»“æœã€‚
  *
- * ²ÎÊı£º
- * animalId£ºÄ¿±ê¶¯Îï±àºÅ¡£
- * out£º[Êä³ö²ÎÊı] ³É¹¦ºó½ÓÊÕÍêÕû½á¹û£»
- *      ¶¯Îï»òÔ°Çø²»´æÔÚÊ±±£³ÖÔ­Öµ¡£
+ * å‚æ•°ï¼š
+ * animalIdï¼šç›®æ ‡åŠ¨ç‰©ç¼–å·ã€‚
+ * outï¼š[è¾“å‡ºå‚æ•°] æˆåŠŸåæ¥æ”¶å®Œæ•´ç»“æœï¼›
+ *      åŠ¨ç‰©æˆ–å›­åŒºä¸å­˜åœ¨æ—¶ä¿æŒåŸå€¼ã€‚
  *
- * ·µ»Ø£º
- * true£º²éÑ¯³É¹¦¡£
- * false£º¶¯Îï²»´æÔÚ»ò¹ØÁªÔ°ÇøĞÅÏ¢ÎŞĞ§¡£
+ * è¿”å›ï¼š
+ * trueï¼šæŸ¥è¯¢æˆåŠŸã€‚
+ * falseï¼šåŠ¨ç‰©ä¸å­˜åœ¨æˆ–å…³è”å›­åŒºä¿¡æ¯æ— æ•ˆã€‚
  *
- * ÊµÏÖËµÃ÷£º
- * ÏÈÊ¹ÓÃ¾Ö²¿±äÁ¿×¼±¸½á¹û£¬È«²¿³É¹¦ºóÔÙ¸³¸øout£¬
- * ±ÜÃâ²éÑ¯Ê§°ÜÊ±ÁôÏÂ²»ÍêÕûµÄÊä³öÊı¾İ¡£
- * @details ²éÕÒ¶¯Îï²¢¹¹ÔìÁÙÊ±»ù±¾ĞÅÏ¢£¬ÔÙÌîÈëÄêÁä¡¢ĞÔ±ğ£¬×îºóÌá½»Êä³ö¸±±¾¡£
+ * å®ç°è¯´æ˜ï¼š
+ * å…ˆä½¿ç”¨å±€éƒ¨å˜é‡å‡†å¤‡ç»“æœï¼Œå…¨éƒ¨æˆåŠŸåå†èµ‹ç»™outï¼Œ
+ * é¿å…æŸ¥è¯¢å¤±è´¥æ—¶ç•™ä¸‹ä¸å®Œæ•´çš„è¾“å‡ºæ•°æ®ã€‚
+ * @details æŸ¥æ‰¾åŠ¨ç‰©å¹¶æ„é€ ä¸´æ—¶åŸºæœ¬ä¿¡æ¯ï¼Œå†å¡«å…¥å¹´é¾„ã€æ€§åˆ«ï¼Œæœ€åæäº¤è¾“å‡ºå‰¯æœ¬ã€‚
  */
 bool AnimalManager::getAnimalDetailInfo(
     const std::string& animalId,
     AnimalDetailInfo& out
 ) const {
-    // ¸´ÓÃ½×¶Î4ÒÑ¾­ÊµÏÖµÄÄÚ²¿²éÕÒº¯Êı¡£
+    // å¤ç”¨é˜¶æ®µ4å·²ç»å®ç°çš„å†…éƒ¨æŸ¥æ‰¾å‡½æ•°ã€‚
     const Animal* animal = findAnimalInternal(animalId);
 
     if (animal == nullptr) {
@@ -248,7 +248,7 @@ bool AnimalManager::getAnimalDetailInfo(
 
     AnimalDetailInfo info;
 
-    // ¸´ÓÃ½×¶Î5µÄĞÅÏ¢×ª»»£¬Í³Ò»ÌîĞ´Ô°Çø¡¢×´Ì¬ºÍÕ¹³öĞÅÏ¢¡£
+    // å¤ç”¨é˜¶æ®µ5çš„ä¿¡æ¯è½¬æ¢ï¼Œç»Ÿä¸€å¡«å†™å›­åŒºã€çŠ¶æ€å’Œå±•å‡ºä¿¡æ¯ã€‚
     if (!buildBasicInfo(*animal, info.basic)) {
         return false;
     }
@@ -256,16 +256,16 @@ bool AnimalManager::getAnimalDetailInfo(
     info.age = animal->getAge();
     info.gender = animal->getGender();
 
-    // ÍêÕû½á¹û×¼±¸ºÃºó£¬ÔÙ½»¸øµ÷ÓÃ·½¡£
+    // å®Œæ•´ç»“æœå‡†å¤‡å¥½åï¼Œå†äº¤ç»™è°ƒç”¨æ–¹ã€‚
     out = std::move(info);
 
     return true;
 }
 
-//ÅĞ¶ÏÖ¸¶¨IDµÄ¶¯ÎïÊÇ·ñ¿ÉÒÔ½ÓÊÜÍ¶Î¹£»²ÎÊı£º¶¯ÎïID¡£
+//åˆ¤æ–­æŒ‡å®šIDçš„åŠ¨ç‰©æ˜¯å¦å¯ä»¥æ¥å—æŠ•å–‚ï¼›å‚æ•°ï¼šåŠ¨ç‰©IDã€‚
 /**
- * @brief ÏÈ¼ì²é¶¯Îï´æÔÚ£¬ÔÙ°´×´Ì¬·ÖÖ§£ºÕı³£¡¢ÖÎÁÆÖĞ¡¢¸ôÀëÔÊĞíÎ¹Ñø£¬×ª³öºÍËÀÍö²»ÔÊĞí¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
+ * @brief å…ˆæ£€æŸ¥åŠ¨ç‰©å­˜åœ¨ï¼Œå†æŒ‰çŠ¶æ€åˆ†æ”¯ï¼šæ­£å¸¸ã€æ²»ç–—ä¸­ã€éš”ç¦»å…è®¸å–‚å…»ï¼Œè½¬å‡ºå’Œæ­»äº¡ä¸å…è®¸ã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
  */
 bool AnimalManager::canReceiveFeeding(const std::string& animalId) const {
     const Animal* animal = findAnimalInternal(animalId);
@@ -288,10 +288,10 @@ bool AnimalManager::canReceiveFeeding(const std::string& animalId) const {
     return false;
 }
 
-//ÅĞ¶ÏÖ¸¶¨ID¶¯ÎïÊÇ·ñ´¦ÓÚ¡°Õ¹³ö¡±×´Ì¬¡£²ÎÊı£º¶¯ÎïID¡£
+//åˆ¤æ–­æŒ‡å®šIDåŠ¨ç‰©æ˜¯å¦å¤„äºâ€œå±•å‡ºâ€çŠ¶æ€ã€‚å‚æ•°ï¼šåŠ¨ç‰©IDã€‚
 /**
- * @brief ¼ì²é¶¯Îï´æÔÚÇÒ×´Ì¬µÈÓÚ NORMAL£¬ÀûÓÃ¶ÌÂ·ÇóÖµ±ÜÃâ·ÃÎÊ¿ÕÖ¸Õë¡£
- * @param animalId ¶¯ÎïÎ¨Ò»±àºÅ¡£
+ * @brief æ£€æŸ¥åŠ¨ç‰©å­˜åœ¨ä¸”çŠ¶æ€ç­‰äº NORMALï¼Œåˆ©ç”¨çŸ­è·¯æ±‚å€¼é¿å…è®¿é—®ç©ºæŒ‡é’ˆã€‚
+ * @param animalId åŠ¨ç‰©å”¯ä¸€ç¼–å·ã€‚
  */
 bool AnimalManager::isAnimalOnDisplay(const std::string& animalId) const {
     const Animal* animal = findAnimalInternal(animalId);
@@ -299,10 +299,10 @@ bool AnimalManager::isAnimalOnDisplay(const std::string& animalId) const {
     return animal != nullptr && animal->getStatus() == AnimalStatus::NORMAL;
 }
 
-//°´¹Ø¼ü×ÖÄ£ºıËÑË÷¶¯Îï£¨Æ¥ÅäÃû³Æ»òÎïÖÖ£©£»²ÎÊı£º¹Ø¼ü´Ê¡£
+//æŒ‰å…³é”®å­—æ¨¡ç³Šæœç´¢åŠ¨ç‰©ï¼ˆåŒ¹é…åç§°æˆ–ç‰©ç§ï¼‰ï¼›å‚æ•°ï¼šå…³é”®è¯ã€‚
 /**
- * @brief Öğ¸ö¼ì²éÃû³Æ»òÎïÖÖÊÇ·ñ°üº¬¹Ø¼ü×Ö£¬½«³É¹¦¹¹ÔìµÄ»ù±¾ĞÅÏ¢¸±±¾¼ÓÈë½á¹û¡£
- * @param keyword Ãû³Æ»òÎïÖÖµÄ×Ó´®£»¿Õ´®Æ¥ÅäÈ«²¿¡£
+ * @brief é€ä¸ªæ£€æŸ¥åç§°æˆ–ç‰©ç§æ˜¯å¦åŒ…å«å…³é”®å­—ï¼Œå°†æˆåŠŸæ„é€ çš„åŸºæœ¬ä¿¡æ¯å‰¯æœ¬åŠ å…¥ç»“æœã€‚
+ * @param keyword åç§°æˆ–ç‰©ç§çš„å­ä¸²ï¼›ç©ºä¸²åŒ¹é…å…¨éƒ¨ã€‚
  */
 std::vector<AnimalBasicInfo> AnimalManager::searchAnimals(const std::string& keyword) const {
     std::vector<AnimalBasicInfo> result;
@@ -324,10 +324,10 @@ std::vector<AnimalBasicInfo> AnimalManager::searchAnimals(const std::string& key
     return result;
 }
 
-//»ñÈ¡Ö¸¶¨Ô°ÇøÏÂµÄËùÓĞ¶¯Îï»ù±¾ĞÅÏ¢¡£²ÎÊı£ºÔ°ÇøÃû³Æ¡£
+//è·å–æŒ‡å®šå›­åŒºä¸‹çš„æ‰€æœ‰åŠ¨ç‰©åŸºæœ¬ä¿¡æ¯ã€‚å‚æ•°ï¼šå›­åŒºåç§°ã€‚
 /**
- * @brief ÏÈÈ·ÈÏÔ°Çø´æÔÚ£¬ÔÙ±éÀú¶¯Îï°´Ô°Çø±àºÅÉ¸Ñ¡²¢·µ»Ø»ù±¾ĞÅÏ¢¸±±¾¡£
- * @param zoneId ËùÊôÔ°Çø±àºÅ¡£
+ * @brief å…ˆç¡®è®¤å›­åŒºå­˜åœ¨ï¼Œå†éå†åŠ¨ç‰©æŒ‰å›­åŒºç¼–å·ç­›é€‰å¹¶è¿”å›åŸºæœ¬ä¿¡æ¯å‰¯æœ¬ã€‚
+ * @param zoneId æ‰€å±å›­åŒºç¼–å·ã€‚
  */
 std::vector<AnimalBasicInfo> AnimalManager::getAnimalsByZone(const std::string& zoneId) const {
     std::vector<AnimalBasicInfo> result;
@@ -351,15 +351,15 @@ std::vector<AnimalBasicInfo> AnimalManager::getAnimalsByZone(const std::string& 
     return result;
 }
 
-//´íÎóĞÅÏ¢»ñÈ¡
+//é”™è¯¯ä¿¡æ¯è·å–
 const std::string& AnimalManager::getLastError() const {
     return lastError;
 }
 
-//ÊµÏÖ±£´æ¶¯Îï£»²ÎÊı£ºÎÄ¼şÃû¡££¨µ«ÊÇ¿ÉÄÜ³öÏÖÖ»ÓĞ°ë¸öÎÄ¼şµÄÇé¿ö£¬»¹ÔÚÏë£©
+//å®ç°ä¿å­˜åŠ¨ç‰©ï¼›å‚æ•°ï¼šæ–‡ä»¶åã€‚ï¼ˆä½†æ˜¯å¯èƒ½å‡ºç°åªæœ‰åŠä¸ªæ–‡ä»¶çš„æƒ…å†µï¼Œè¿˜åœ¨æƒ³ï¼‰
 /**
- * @brief °´¹Ì¶¨×Ö¶ÎË³ĞòºÍÊúÏß·Ö¸ô·ûĞòÁĞ»¯¼ÇÂ¼£¬¼ì²éÎÄ¼şĞ´Èë½á¹û²¢·µ»ØÊÇ·ñ³É¹¦¡£
- * @param filename ¶ÁĞ´ÎÄ¼şÂ·¾¶¡£
+ * @brief æŒ‰å›ºå®šå­—æ®µé¡ºåºå’Œç«–çº¿åˆ†éš”ç¬¦åºåˆ—åŒ–è®°å½•ï¼Œæ£€æŸ¥æ–‡ä»¶å†™å…¥ç»“æœå¹¶è¿”å›æ˜¯å¦æˆåŠŸã€‚
+ * @param filename è¯»å†™æ–‡ä»¶è·¯å¾„ã€‚
  */
 bool AnimalManager::saveToFile(const std::string& filename) const {
     lastError.clear();
@@ -370,7 +370,7 @@ bool AnimalManager::saveToFile(const std::string& filename) const {
     );
 
     if (!output) {
-        lastError = "ÎŞ·¨Ğ´Èë¶¯ÎïÎÄ¼ş£º" + filename;
+        lastError = "æ— æ³•å†™å…¥åŠ¨ç‰©æ–‡ä»¶ï¼š" + filename;
         return false;
     }
 
@@ -379,7 +379,7 @@ bool AnimalManager::saveToFile(const std::string& filename) const {
             animalStatusToCode(animal->getStatus());
 
         if (statusCode.empty()) {
-            lastError = "¶¯Îï×´Ì¬·Ç·¨£º" + animal->getId();
+            lastError = "åŠ¨ç‰©çŠ¶æ€éæ³•ï¼š" + animal->getId();
             return false;
         }
 
@@ -395,19 +395,19 @@ bool AnimalManager::saveToFile(const std::string& filename) const {
 
     output.close();
 
-    // ¼ì²é×îÖÕĞ´Èë½á¹û£¬²»ÄÜÖ»¼ì²éÎÄ¼şÊÇ·ñ³É¹¦´ò¿ª¡£
+    // æ£€æŸ¥æœ€ç»ˆå†™å…¥ç»“æœï¼Œä¸èƒ½åªæ£€æŸ¥æ–‡ä»¶æ˜¯å¦æˆåŠŸæ‰“å¼€ã€‚
     if (!output) {
-        lastError = "¶¯ÎïÎÄ¼şĞ´ÈëÊ§°Ü£º" + filename;
+        lastError = "åŠ¨ç‰©æ–‡ä»¶å†™å…¥å¤±è´¥ï¼š" + filename;
         return false;
     }
 
     return true;
 }
 
-//ÊµÏÖ¼ÓÔØ¶¯Îï£»²ÎÊı£ºÎÄ¼şÃû¡£
+//å®ç°åŠ è½½åŠ¨ç‰©ï¼›å‚æ•°ï¼šæ–‡ä»¶åã€‚
 /**
- * @brief ¶ÁÈ¡²¢²ğ·ÖÎÄ¼ş×Ö¶Î£¬Ğ£Ñé¸ñÊ½¡¢±àºÅÎ¨Ò»ĞÔ¼°¹ØÁª¶ÔÏó£¬ÏÈ´æÈëÁÙÊ±ÈİÆ÷£¬È«²¿³É¹¦ºó½»»»ÕıÊ½Êı¾İ¡£
- * @param filename ¶ÁĞ´ÎÄ¼şÂ·¾¶¡£
+ * @brief è¯»å–å¹¶æ‹†åˆ†æ–‡ä»¶å­—æ®µï¼Œæ ¡éªŒæ ¼å¼ã€ç¼–å·å”¯ä¸€æ€§åŠå…³è”å¯¹è±¡ï¼Œå…ˆå­˜å…¥ä¸´æ—¶å®¹å™¨ï¼Œå…¨éƒ¨æˆåŠŸåäº¤æ¢æ­£å¼æ•°æ®ã€‚
+ * @param filename è¯»å†™æ–‡ä»¶è·¯å¾„ã€‚
  */
 bool AnimalManager::loadFromFile(const std::string& filename) {
     lastError.clear();
@@ -415,11 +415,11 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
     std::ifstream input(filename, std::ios::binary);
 
     if (!input) {
-        lastError = "ÎŞ·¨´ò¿ª¶¯ÎïÎÄ¼ş£º" + filename;
+        lastError = "æ— æ³•æ‰“å¼€åŠ¨ç‰©æ–‡ä»¶ï¼š" + filename;
         return false;
     }
 
-    // ÏÈ¼ÓÔØµ½ÁÙÊ±ÈİÆ÷£¬È«²¿³É¹¦ºó²ÅÌæ»»ÕıÊ½Êı¾İ¡£
+    // å…ˆåŠ è½½åˆ°ä¸´æ—¶å®¹å™¨ï¼Œå…¨éƒ¨æˆåŠŸåæ‰æ›¿æ¢æ­£å¼æ•°æ®ã€‚
     std::vector<std::unique_ptr<Animal>> loaded;
     std::set<std::string> loadedIds;
 
@@ -429,13 +429,13 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
     while (std::getline(input, line)) {
         ++lineNumber;
 
-        // ¼æÈİ Windows ±à¼­Æ÷Ğ´³öµÄ UTF-8 BOM¡£
+        // å…¼å®¹ Windows ç¼–è¾‘å™¨å†™å‡ºçš„ UTF-8 BOMã€‚
         if (lineNumber == 1 &&
             line.compare(0, 3, "\xEF\xBB\xBF") == 0) {
             line.erase(0, 3);
         }
 
-        // getline È¥µôÁË \n£¬µ« Windows ÎÄ¼ş¿ÉÄÜ»¹ÁôÏÂ \r¡£
+        // getline å»æ‰äº† \nï¼Œä½† Windows æ–‡ä»¶å¯èƒ½è¿˜ç•™ä¸‹ \rã€‚
         if (!line.empty() && line.back() == '\r') {
             line.pop_back();
         }
@@ -444,13 +444,13 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
             continue;
         }
 
-        // ±¾ĞĞËùÓĞ´íÎóÍ³Ò»¸½ÉÏĞĞºÅ¡£
+        // æœ¬è¡Œæ‰€æœ‰é”™è¯¯ç»Ÿä¸€é™„ä¸Šè¡Œå·ã€‚
         const auto fail = [&](const std::string& message) {
-            lastError ="µÚ " + std::to_string(lineNumber) +" ĞĞ£º" + message;
+            lastError ="ç¬¬ " + std::to_string(lineNumber) +" è¡Œï¼š" + message;
             return false;
         };
 
-        // °´ | ²ğ·Ö£»±£ÁôÄ©Î²¿Õ×Ö¶Î£¬±ãÓÚ×¼È·¼ì²é¸ñÊ½¡£
+        // æŒ‰ | æ‹†åˆ†ï¼›ä¿ç•™æœ«å°¾ç©ºå­—æ®µï¼Œä¾¿äºå‡†ç¡®æ£€æŸ¥æ ¼å¼ã€‚
         std::vector<std::string> fields;
         std::size_t begin = 0;
 
@@ -468,7 +468,7 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
         }
 
         if (fields.size() != 8) {
-            return fail("±ØĞëÇ¡ºÃÓĞ8¸ö×Ö¶Î");
+            return fail("å¿…é¡»æ°å¥½æœ‰8ä¸ªå­—æ®µ");
         }
 
         const std::string& id = fields[0];
@@ -481,44 +481,44 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
         const std::string& statusText = fields[7];
 
         if (!zoo_detail::validId(id)) {
-            return fail("AnimalID ¸ñÊ½·Ç·¨");
+            return fail("AnimalID æ ¼å¼éæ³•");
         }
 
         if (!loadedIds.insert(id).second) {
-            return fail("AnimalID ÖØ¸´£º" + id);
+            return fail("AnimalID é‡å¤ï¼š" + id);
         }
 
         if (!zoo_detail::validText(name, true) ||
             !zoo_detail::validText(species, true) ||
             !zoo_detail::validText(gender, true)) {
-            return fail("Ãû³Æ¡¢ÎïÖÖ»òĞÔ±ğ×Ö¶Î·Ç·¨");
+            return fail("åç§°ã€ç‰©ç§æˆ–æ€§åˆ«å­—æ®µéæ³•");
         }
 
         if (!zoo_detail::validId(zoneId) ||
             !zones.zoneExists(zoneId)) {
-            return fail("Ô°Çø±àºÅ·Ç·¨»òÔ°Çø²»´æÔÚ£º" + zoneId);
+            return fail("å›­åŒºç¼–å·éæ³•æˆ–å›­åŒºä¸å­˜åœ¨ï¼š" + zoneId);
         }
 
-        // from_chars ²»Å×Òì³££¬ÇÒ¿ÉÒÔ¼ì²éÊÇ·ñ½âÎöÁËÈ«²¿×Ö·û¡£
+        // from_chars ä¸æŠ›å¼‚å¸¸ï¼Œä¸”å¯ä»¥æ£€æŸ¥æ˜¯å¦è§£æäº†å…¨éƒ¨å­—ç¬¦ã€‚
         int age = 0;
 
         const char* ageBegin = ageText.data();
         const char* ageEnd = ageBegin + ageText.size();
 
-        const auto parsedAge = std::from_chars(ageBegin, ageEnd, age); //Ó¦¸Ã½âÎö³östd::from_chars_result½á¹¹Ìå
+        const auto parsedAge = std::from_chars(ageBegin, ageEnd, age); //åº”è¯¥è§£æå‡ºstd::from_chars_resultç»“æ„ä½“
 
         if (ageText.empty() ||
-            parsedAge.ec != std::errc{} ||  //¼ì²éÓĞÃ»ÓĞ¡°abc¡±ÕâÖÖ½âÎö²»Õı³£µÄ¡£
-            parsedAge.ptr != ageEnd ||  //¼ì²éÓĞÃ»ÓĞ°ÑÕû¸ö×Ö·û¶¼½âÎöÍê£¬"123abc"¡£
+            parsedAge.ec != std::errc{} ||  //æ£€æŸ¥æœ‰æ²¡æœ‰â€œabcâ€è¿™ç§è§£æä¸æ­£å¸¸çš„ã€‚
+            parsedAge.ptr != ageEnd ||  //æ£€æŸ¥æœ‰æ²¡æœ‰æŠŠæ•´ä¸ªå­—ç¬¦éƒ½è§£æå®Œï¼Œ"123abc"ã€‚
             age < 0 ||
             ageText.front() == '-') {
-            return fail("ÄêÁä±ØĞëÊÇ·Ç¸ºÕûÊı");
+            return fail("å¹´é¾„å¿…é¡»æ˜¯éè´Ÿæ•´æ•°");
         }
 
         AnimalStatus status;
 
         if (!animalStatusFromCode(statusText, status)) {
-            return fail("¶¯Îï×´Ì¬±àÂë·Ç·¨£º" + statusText);
+            return fail("åŠ¨ç‰©çŠ¶æ€ç¼–ç éæ³•ï¼š" + statusText);
         }
 
         try {
@@ -540,7 +540,7 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
                 );
             }
             else {
-                return fail("¶¯ÎïÀà±ğ·Ç·¨£º" + category);
+                return fail("åŠ¨ç‰©ç±»åˆ«éæ³•ï¼š" + category);
             }
 
             loaded.push_back(std::move(animal));
@@ -552,12 +552,43 @@ bool AnimalManager::loadFromFile(const std::string& filename) {
     }
 
     if (input.bad() || (input.fail() && !input.eof())) {
-        lastError = "¶¯ÎïÎÄ¼ş¶ÁÈ¡Ê§°Ü£º" + filename;
+        lastError = "åŠ¨ç‰©æ–‡ä»¶è¯»å–å¤±è´¥ï¼š" + filename;
         return false;
     }
 
-    // ËùÓĞ¼ÇÂ¼¶¼Í¨¹ıĞ£Ñéºó£¬Ò»´ÎĞÔÌæ»»ÕıÊ½ÁĞ±í¡£
+    // æ‰€æœ‰è®°å½•éƒ½é€šè¿‡æ ¡éªŒåï¼Œä¸€æ¬¡æ€§æ›¿æ¢æ­£å¼åˆ—è¡¨ã€‚
     animals.swap(loaded);
 
+    return true;
+}
+/**
+ * @brief ä¿®æ”¹åŠ¨ç‰©æ™®é€šèµ„æ–™ï¼Œä¿æŒç¼–å·ã€ç‰©ç§ã€ç±»åˆ«åŠçŠ¶æ€ä¸å˜ã€‚
+ * @param animalId ç›®æ ‡åŠ¨ç‰©ç¼–å·ã€‚
+ * @param name æ–°åç§°ã€‚
+ * @param age éè´Ÿå¹´é¾„ã€‚
+ * @param gender æ–°æ€§åˆ«æ–‡æœ¬ã€‚
+ * @param zoneId å·²å­˜åœ¨çš„ç›®æ ‡å›­åŒºç¼–å·ã€‚
+ * @return æˆåŠŸè¿”å› trueï¼›ä¸šåŠ¡æ ¡éªŒå¤±è´¥è¿”å› false å¹¶ä¿ç•™åŸèµ„æ–™ã€‚
+ * @details åœ¨ä»»ä½• Setter è°ƒç”¨å‰æ ¡éªŒå…¨éƒ¨è¾“å…¥ï¼Œé¿å…éæ³•å­—æ®µå¯¼è‡´éƒ¨åˆ†ä¿®æ”¹ã€‚
+ */
+bool AnimalManager::updateAnimalInfo(const std::string& animalId,
+                                    const std::string& name, int age,
+                                    const std::string& gender,
+                                    const std::string& zoneId) {
+    lastError.clear();
+    Animal* animal = findAnimalInternal(animalId);
+    if (!animal) {
+        lastError = "Animal not found: " + animalId;
+        return false;
+    }
+    if (!zoo_detail::validText(name) || !zoo_detail::validText(gender) || age < 0 ||
+        !zoo_detail::validId(zoneId) || !zones.zoneExists(zoneId)) {
+        lastError = "Invalid animal fields or unknown zone";
+        return false;
+    }
+    animal->setName(name);
+    animal->setAge(age);
+    animal->setGender(gender);
+    animal->setZoneId(zoneId);
     return true;
 }
