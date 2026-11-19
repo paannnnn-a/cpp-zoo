@@ -18,7 +18,7 @@
 #include "include/visitor/visitormenu.h"
 
 /**
- * 功能：创建并加载A/B子系统，调度菜单，统一保存和退出。
+ * 功能：创建并加载A/B/C子系统，调度菜单，统一保存和退出
  *
  * 参数：无。
  *
@@ -87,7 +87,7 @@ int main() {
     }
 
     // =========================================================
-    // 三、创建菜单，共享前面已经加载的Manager
+    // 三、创建A/B菜单并加载C游客与票务模块
     // =========================================================
 
     InventoryMenu inventoryMenu(inventory, foodFilename);
@@ -95,7 +95,7 @@ int main() {
 
     AnimalMenu animalMenu(animals, zones, aStorage);
     HealthMenu healthMenu(animals, health, aStorage);
-    // 创建并加载游客与票务模块
+    // C内部创建各管理器，并通过A的只读接口查询园区和动物
     VisitorMenu visitorMenu(zones, animals, dataDirectory);
     if (!visitorMenu.load()) {
         std::cout << "游客与票务数据加载失败："
@@ -104,7 +104,7 @@ int main() {
     }
 
     /**
-     * 功能：统一保存A/B数据。
+     * 功能：统一保存A/B/C数据
      *
      * 参数：无，通过引用捕获使用前面创建的Manager和文件路径。
      *
@@ -233,8 +233,7 @@ int main() {
                 result = visitorMenu.run();
             }
 
-            // A菜单已经有自动保存；这里再做一次统一保存，
-            // 同时保留原程序离开B菜单后保存数据的行为。
+            // 离开任一子菜单后，统一保存A/B/C数据
             if (!saveAll()) {
                 std::cout
                     << "部分数据尚未保存成功，"
