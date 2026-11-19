@@ -9,11 +9,34 @@ using namespace zoo_ui;
  * @details 循环显示选项并读取输入；查询直接显示，修改经确认后调用管理器并保存；捕获导航和字段异常。
  */
 char HealthMenu::run() {
+    const auto showProfile = [&](const AnimalDetailInfo &info) {
+        show(info.basic);
+        std::cout << "年龄：" << info.age << " 性别：" << info.gender << '\n';
+        medical(health.getMedicalRecordsByAnimal(info.basic.animalId));
+    };
     for (;;) {
-        std::cout << "\n=== 健康管理 ===\n1体检 2疾病 3治疗 4康复 5医疗历史 6完整档案\n";
+        std::cout << "\n=== 健康管理 ===\n"
+                     "1. 体检\n"
+                     "2. 疾病\n"
+                     "3. 治疗\n"
+                     "4. 康复\n"
+                     "5. 医疗历史\n"
+                     "6. 完整档案\n"
+                     "回车. 查看全部健康档案\n";
         bool inForm = false;
         try {
-            auto choice = ask("请选择");
+            auto choice = ask("请选择", true);
+            if (choice.empty()) {
+                const auto all = animals.searchAnimals("");
+                if (all.empty())
+                    std::cout << "暂无动物档案。\n";
+                for (const auto &animal : all) {
+                    AnimalDetailInfo info;
+                    if (animals.getAnimalDetailInfo(animal.animalId, info))
+                        showProfile(info);
+                }
+                continue;
+            }
             inForm = true;
             if (choice != "1" && choice != "2" && choice != "3" && choice != "4" && choice != "5" &&
                 choice != "6") {
@@ -27,11 +50,10 @@ char HealthMenu::run() {
                 continue;
             }
             if (choice == "5" || choice == "6") {
-                if (choice == "6") {
-                    show(info.basic);
-                    std::cout << "年龄：" << info.age << " 性别：" << info.gender << '\n';
-                }
-                medical(health.getMedicalRecordsByAnimal(id));
+                if (choice == "6")
+                    showProfile(info);
+                else
+                    medical(health.getMedicalRecordsByAnimal(id));
                 continue;
             }
             auto date = ask("日期 YYYY-MM-DD");
@@ -42,7 +64,7 @@ char HealthMenu::run() {
             std::optional<AnimalStatus> diseaseStatus;
             bool restore = false;
             if (choice == "2") {
-                auto code = ask("1仅登记 2改为治疗中 3改为隔离");
+                auto code = ask("1. 仅登记\n2. 改为治疗中\n3. 改为隔离\n请选择");
                 if (code == "2")
                     diseaseStatus = AnimalStatus::TREATMENT;
                 else if (code == "3")
@@ -53,7 +75,7 @@ char HealthMenu::run() {
                 }
             }
             if (choice == "4") {
-                auto code = ask("1记录并恢复正常 2只记录不改状态");
+                auto code = ask("1. 记录并恢复正常\n2. 只记录不改状态\n请选择");
                 if (code != "1" && code != "2") {
                     std::cout << "选项非法，未保存。\n";
                     continue;
