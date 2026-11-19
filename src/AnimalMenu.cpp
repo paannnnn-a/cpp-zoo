@@ -10,11 +10,20 @@ using namespace zoo_ui;
  */
 char AnimalMenu::run() {
     for (;;) {
-        std::cout << "\n=== 动物管理 ===\n1添加 2修改资料 3移动园区 4修改状态\n5编号查询 6模糊查询 "
-                     "7园区查询 8全部档案\n9园区列表 A添加园区\n";
+        std::cout << "\n=== 动物管理 ===\n"
+                     "1. 添加\n"
+                     "2. 修改资料\n"
+                     "3. 移动园区\n"
+                     "4. 修改状态\n"
+                     "5. 编号查询\n"
+                     "6. 模糊查询\n"
+                     "7. 园区查询\n"
+                     "8. 全部档案（可直接按回车）\n"
+                     "9. 园区列表\n"
+                     "A. 添加园区\n";
         bool inForm = false;
         try {
-            auto choice = ask("请选择");
+            auto choice = ask("请选择", true);
             inForm = true;
             bool changed = false;
             if (choice == "1") {
@@ -68,7 +77,7 @@ char AnimalMenu::run() {
                 list(animals.searchAnimals(ask("关键字（回车查全部）", true)));
             else if (choice == "7")
                 list(animals.getAnimalsByZone(ask("园区编号")));
-            else if (choice == "8")
+            else if (choice == "8" || choice.empty())
                 list(animals.searchAnimals(""));
             else if (choice == "9") {
                 for (const auto &z : zones.getAllZones())
