@@ -11,7 +11,7 @@
 class Animal {
 public:
     /**
-     * @brief 通过初始化列表初始化成员或绑定协作对象；实体构造复用字段校验，派生动物委托 Animal 构造。
+     * @brief 初始化动物编号，并按各字段的修改规则校验其余资料。
      * @param animalId 动物唯一编号。
      * @param name 名称。
      * @param species 物种。
@@ -19,82 +19,64 @@ public:
      * @param gender 性别文本。
      * @param zoneId 所属园区编号。
      * @param status 动物状态。
-         */
+     */
     Animal(const std::string& animalId, const std::string& name,
            const std::string& species, int age, const std::string& gender,
            const std::string& zoneId, AnimalStatus status = AnimalStatus::NORMAL);
-    // 基类指针销毁派生对象时，必须有虚析构函数。
-    /**
-     * @brief 使用默认析构释放成员资源；虚析构同时执行派生类析构。
-     * @note 参数：无。
-         */
+    /// @brief 通过 Animal 指针删除对象时，虚析构函数会调用实际派生类的析构函数。
     virtual ~Animal() = default;
 
     // 禁止整体赋值绕过“不能修改编号”的约定；用 Setter 修改业务字段。
-    /**
-     * @brief 通过初始化列表初始化成员或绑定协作对象；实体构造复用字段校验，派生动物委托 Animal 构造。
-         */
+    // 禁止拷贝构造和拷贝赋值。
     Animal(const Animal&) = delete;
     Animal& operator=(const Animal&) = delete;
-    /**
-     * @brief 通过初始化列表初始化成员或绑定协作对象；实体构造复用字段校验，派生动物委托 Animal 构造。
-         */
+    // 禁止移动构造和移动赋值。
     Animal(Animal&&) = delete;
     Animal& operator=(Animal&&) = delete;
 
     const std::string& getId() const;
     const std::string& getName() const;
     const std::string& getSpecies() const;
-    /**
-     * @brief 直接返回对应成员的值或只读引用；引用的有效期受当前对象生命周期限制。
-     * @note 参数：无。
-         */
     int getAge() const;
     const std::string& getGender() const;
     const std::string& getZoneId() const;
-    /**
-     * @brief 直接返回对应成员的值或只读引用；引用的有效期受当前对象生命周期限制。
-     * @note 参数：无。
-         */
     AnimalStatus getStatus() const;
 
     // 构造与 Setter 校验失败抛出 invalid_argument；不会留下非法数据。
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param name 名称。
-         */
+     * @brief 名称须包含非空白字符，且不能包含竖线或换行。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setName(const std::string& name);
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param species 物种。
-         */
+     * @brief 物种须包含非空白字符，且不能包含竖线或换行。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setSpecies(const std::string& species);
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param age 非负年龄。
-         */
+     * @brief 年龄必须是非负整数。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setAge(int age);
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param gender 性别文本。
-         */
+     * @brief 性别须为非空白文本，且不能包含竖线或换行。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setGender(const std::string& gender);
-    // 此处只校验编号格式。园区是否存在由阶段4的 AnimalManager 校验。
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param zoneId 所属园区编号。
-         */
+     * @brief 校验园区编号格式；园区是否存在由 AnimalManager 检查。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setZoneId(const std::string& zoneId);
     /**
-     * @brief 先校验传入字段，校验通过后赋值；非法字段抛出 std::invalid_argument。
-     * @param status 动物状态。
-         */
+     * @brief 状态须为 AnimalStatus 定义的枚举值。
+     * @throws std::invalid_argument 字段校验失败。
+     */
     void setStatus(AnimalStatus status);
 
     /**
      * @brief 返回当前派生类对应的固定类别名称，供多态查询及持久化使用。
-     * @note 参数：无。
-         */
+     */
     virtual std::string getCategory() const = 0;
 
 private:

@@ -6,7 +6,6 @@
 #include <sstream>
 /**
  * @brief 查找第一个未使用的M前缀医疗编号。
- * @note 参数：无。
  * @return 例如M001；超过三位时自然扩展。
  * @details 从 1 开始递增，检查已有记录编号，返回第一个未占用的 M 前缀编号。
  */
@@ -23,12 +22,11 @@ std::string HealthManager::generateRecordId() const {
     }
 }
 /**
- * @brief 检查动物在园性及医疗编号，再插入记录并执行可选状态变更。
+ * @brief 检查动物是否在园及记录编号是否重复，再向内存中的记录列表追加记录。
  * @param r [in] 待接管的非空医疗unique_ptr。
  * @param status 可选目标状态；调用者负责限定可用枚举。
  * @return 全部成功true；校验失败false；状态更新失败撤销本条记录。
- * @note 接管指针；不自动保存；死亡/转出档案只能查询旧医疗历史。
- * @details 检查动物在园状态和记录编号，追加记录后执行可选状态变更；状态变更失败撤销本次记录。
+ * @note 记录仅追加到内存；如需联动状态，更新失败时移除刚追加的记录。
  */
 bool HealthManager::append(std::unique_ptr<MedicalRecord> r, std::optional<AnimalStatus> status) {
     lastError.clear();

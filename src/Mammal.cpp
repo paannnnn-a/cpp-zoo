@@ -1,8 +1,8 @@
 #include "Mammal.h"
 
 /**
- * @brief 通过初始化列表初始化成员或绑定协作对象；实体构造复用字段校验，派生动物委托 Animal 构造。
- * @param id 待处理对象编号。
+ * @brief 由 Animal 基类初始化并校验动物的公共字段。
+ * @param id 动物编号。
  * @param name 名称。
  * @param species 物种。
  * @param age 非负年龄。
@@ -17,7 +17,6 @@ Mammal::Mammal(const std::string& id, const std::string& name,
 
 // override 的实现让基类指针也能得到实际对象的类别。
 /**
- * @brief 返回当前派生类对应的固定类别名称，供多态查询及持久化使用。
- * @note 参数：无。
+ * @brief 返回类别编码 "Mammal"。
  */
 std::string Mammal::getCategory() const { return "Mammal"; }

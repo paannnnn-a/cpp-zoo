@@ -7,7 +7,7 @@
 
 /**
  * @brief 遍历园区并比较编号，命中返回 true，遍历结束返回 false。
- * @param id 待处理对象编号。
+ * @param id 园区编号。
  */
 bool ZoneManager::zoneExists(const std::string& id) const {
     for (const auto& zone : zones) {
@@ -32,7 +32,6 @@ bool ZoneManager::addZone(const Zone& zone) {
 
 /**
  * @brief 预留容器容量，逐个调用 toInfo 并收集园区副本。
- * @note 参数：无。
  */
 std::vector<ZoneInfo> ZoneManager::getAllZones() const {
     std::vector<ZoneInfo> result;
@@ -43,7 +42,7 @@ std::vector<ZoneInfo> ZoneManager::getAllZones() const {
 
 /**
  * @brief 按编号遍历园区，命中时写入副本并返回 true，否则保持输出参数不变。
- * @param id 待处理对象编号。
+ * @param id 园区编号。
  * @param outInfo 成功时写入的查询副本；失败保持原值。
  */
 bool ZoneManager::getZoneInfo(const std::string& id, ZoneInfo& outInfo) const {
@@ -59,7 +58,7 @@ bool ZoneManager::getZoneInfo(const std::string& id, ZoneInfo& outInfo) const {
 const std::string& ZoneManager::getLastError() const { return lastError; }
 
 /**
- * @brief 读取并拆分文件字段，校验格式、编号唯一性及关联对象，先存入临时容器，全部成功后交换正式数据。
+ * @brief 逐行校验园区字段和编号唯一性，全部成功后替换园区列表。
  * @param filename 读写文件路径。
  */
 bool ZoneManager::loadFromFile(const std::string& filename) {
@@ -111,7 +110,7 @@ bool ZoneManager::loadFromFile(const std::string& filename) {
 }
 
 /**
- * @brief 按固定字段顺序和竖线分隔符序列化记录，检查文件写入结果并返回是否成功。
+ * @brief 覆盖写入园区文件，关闭文件后检查写入结果。
  * @param filename 读写文件路径。
  */
 bool ZoneManager::saveToFile(const std::string& filename) const {

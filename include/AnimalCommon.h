@@ -12,7 +12,7 @@ enum class AnimalStatus {
 
 // 这是查询结果的副本；修改副本不会修改 A 的内部动物对象。
 /**
- * @brief 无继承关系的查询值类型，无成员方法；各字段保存对应业务信息，修改副本不会修改管理器内的对象。
+ * @brief 动物查询结果，包含基本资料、所在园区、状态和展出标记。
  */
 struct AnimalBasicInfo {
     std::string animalId;
@@ -26,7 +26,7 @@ struct AnimalBasicInfo {
 };
 
 /**
- * @brief 无继承关系的查询值类型，无成员方法；各字段保存对应业务信息，修改副本不会修改管理器内的对象。
+ * @brief 园区查询结果，包含园区编号、名称和描述。
  */
 struct ZoneInfo {
     std::string zoneId;
@@ -34,7 +34,6 @@ struct ZoneInfo {
     std::string description;
 };
 
-// 用于控制台显示；文件中的状态编码由后续持久化阶段统一实现。
 /**
  * @brief 按枚举分支返回中文状态名称；非法值返回未知状态文字。
  * @param status 动物状态。
