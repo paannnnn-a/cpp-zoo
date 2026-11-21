@@ -7,8 +7,7 @@
  * @param d 真实的YYYY-MM-DD日期，检查闰年。
  * @param vet 非空兽医编号；本模块只校验格式。
  * @param desc 非空记录描述，不允许 |、CR、LF。
- * @note 构造函数无返回值；非法字段抛出std::invalid_argument。
- * @details 通过初始化列表初始化成员或绑定协作对象；实体构造复用字段校验，派生动物委托 Animal 构造。
+ * @throws std::invalid_argument 编号、日期或描述不合法。
  */
 MedicalRecord::MedicalRecord(const std::string &id, const std::string &a, const std::string &d,
                              const std::string &vet, const std::string &desc)
@@ -21,10 +20,9 @@ MedicalRecord::MedicalRecord(const std::string &id, const std::string &a, const 
         throw std::invalid_argument("日期必须为真实的 YYYY-MM-DD");
 }
 /**
- * @brief 将当前多态对象转换为只读查询副本。
- * @note 参数：无。
+ * @brief 复制当前记录，供调用方独立查询。
  * @return 包含派生类型编码的MedicalRecordInfo副本。
- * @details 按成员顺序构造值类型查询副本，医疗记录通过 getType 获取派生类型。
+ * @details 复制公共字段，并调用虚函数 getType() 填入实际记录类型。
  */
 MedicalRecordInfo MedicalRecord::toInfo() const {
     return {recordId, animalId, date, veterinarianId, getType(), description};
