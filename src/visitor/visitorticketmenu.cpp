@@ -378,7 +378,7 @@ void VisitorMenu::refundtickets() {
     cout << "可以只退订单中的部分电子票\n";
     vector<string> ticketids;
     if (!readticketids(
-        "请输入需要退款的票号，多个票号用空格分隔，最多10张",
+        "请输入需要退款的票号，最多10张",
         ticketids)) {
         return;
     }

@@ -1,13 +1,21 @@
 ﻿#include "visitor/visitor.h"
 using namespace std;
 
-// 默认构造函数：string 成员会自动初始化为空字符串
+// 默认构造函数（string 成员会自动初始化为空字符串）
 Visitor::Visitor() {
     member = false;
     active = false;
 }
 
-// 使用传入的资料初始化游客
+/**
+ * @brief 使用传入资料创建游客对象
+ * @param id 游客编号
+ * @param user 登录用户名
+ * @param hash 登录密码，保留现有参数名，当前不进行哈希处理
+ * @param nick 显示昵称
+ * @param ismember 是否为会员，省略时为false
+ * @param isactive 账号是否有效，省略时为true
+ */
 Visitor::Visitor(const string& id,
     const string& user,
     const string& hash,
