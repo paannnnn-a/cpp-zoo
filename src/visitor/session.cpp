@@ -28,7 +28,7 @@ string Session::getdisplayname() const {
 bool Session::isloggedin() const {
     return role != Role::guest;
 }
-// 退出登录并清空当前身份
+// 退出   登录并清空当前身份
 void Session::logout() {
     role = Role::guest;
     userid = "";
