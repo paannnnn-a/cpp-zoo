@@ -2,12 +2,18 @@
 #include <string>
 using namespace std;
 
-/// 保存游客资料
+/**
+ * @brief 保存一名游客的账号资料
+ * @details 属性包括游客编号、用户名、密码、昵称、会员身份和账号有效状态
+ * 提供构造函数初始化资料，通过读取函数获取属性，通过设置函数修改资料
+ * 本类没有继承或派生关系，由游客管理器保存和管理多个对象
+ * 注册、身份验证及修改权限等业务检查由相应管理类完成
+ */
 class Visitor {
 private:
     string visitorid;     ///< 游客唯一编号
     string username;      ///< 登录用户名
-    string password;  ///< 密码处理后的验证信息
+    string password;  ///< 登录密码，当前按明文保存
     string nickname;      ///< 显示昵称
     bool member;          ///< 是否为会员
     bool active;          ///< 账号是否有效
@@ -41,12 +47,29 @@ public:
     bool getmember() const;
     /// 判断账号是否有效
     bool getactive() const;
-    /// 修改昵称，内容合法性由管理类检查
+    /**
+    * @brief 更新当前游客对象的昵称
+    * @param newname 已通过游客管理器校验的新昵称
+    * @details 将参数内容赋给成员nickname，会话显示名称由管理器同步
+    */
     void setnickname(const string& newname);
-    /// 更新密码验证信息
+    /**
+    * @brief 更新当前游客对象的登录密码
+    * @param newpassword 已通过游客管理器校验的新密码
+    * @details 将参数内容赋给成员password，当前按明文保存
+    */
     void setpassword(const string& newpassword);
-    /// 设置会员身份，管理员权限由管理类检查
+    /**
+    * @brief 设置当前游客对象的会员身份
+    * @param ismember true表示开通会员，false表示取消会员
+    * @details 将参数值赋给成员member，管理员权限由游客管理器检查
+    */
     void setmember(bool ismember);
-    /// 设置账号有效状态，注销条件由管理类检查
+    /**
+    * @brief 设置当前游客账号的有效状态
+    * @param isactive true表示账号有效，false表示账号无效
+    * @details 将参数值赋给成员active，注销时设为false并保留游客资料
+    * 注销条件检查与退出登录由游客管理器完成
+    */
     void setactive(bool isactive);
 };
