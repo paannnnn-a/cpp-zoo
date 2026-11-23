@@ -168,7 +168,7 @@ void VisitorMenu::checkintickets() {
     cout << "所选电子票全部符合条件时才会执行本次检票\n";
     vector<string> ticketids;
     if (!readticketids(
-        "请输入票号，直接回车取消",
+        "请输入票号 ",
         ticketids)) {
         return;
     }
